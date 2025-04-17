@@ -1,0 +1,253 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Code Cruncher</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(to right, #c6ffdd, #fbd786, #f7797d);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+      align-items: center;
+    }
+
+    .game-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #f67280;
+      color: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .game-header .left h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .game-header nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      margin-left: 2rem;
+    }
+
+    .game-header .right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .profile-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: white;
+      padding: 2px;
+      cursor: pointer;
+    }
+
+    .logout-btn {
+      background: #ff4d4d;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: #c0392b;
+    }
+
+    h1 {
+      margin: 2rem 0 1rem;
+      color: #333;
+    }
+
+    .score {
+      margin-bottom: 1rem;
+      font-weight: bold;
+      color: #333;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(6, 60px);
+      grid-template-rows: repeat(6, 60px);
+      gap: 5px;
+    }
+
+    .tile {
+      width: 60px;
+      height: 60px;
+      background-color: #fff;
+      border-radius: 8px;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      font-size: 0.9rem;
+      font-weight: bold;
+      color: #444;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+
+    .tile:hover {
+      transform: scale(1.05);
+      background-color: #f0f0f0;
+    }
+
+    .controls {
+      margin-top: 1.5rem;
+    }
+
+    button {
+      padding: 0.6rem 1.2rem;
+      font-size: 1rem;
+      background: #fff;
+      color: #f7797d;
+      border: none;
+      border-radius: 8px;
+      font-weight: bold;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background: #fbd786;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="game-header">
+    <div class="left">
+      <h2>STEM Games</h2>
+      <nav>
+        <a href="colhome.html">Dashboard</a>
+      </nav>
+    </div>
+    <div class="right">
+      <img src="icons/profile.svg" alt="Profile" class="profile-icon" />
+      <a href="login.html" class="logout-btn">Logout</a>
+    </div>
+  </header>
+
+  <h1>💻 Code Cruncher</h1>
+  <div class="score">Score: <span id="score">0</span> | High Score: <span id="highScore">0</span></div>
+  <div class="grid" id="grid"></div>
+  <div class="controls">
+    <button onclick="resetGame()">Restart</button>
+  </div>
+
+  <script>
+    const codeSnippets = ['if', 'for', 'int', 'else', 'def', '==', '{', '}', '()', 'True'];
+    const gridSize = 6;
+    let grid = [];
+    let score = 0;
+    let highScore = localStorage.getItem('codeHigh') || 0;
+    document.getElementById('highScore').textContent = highScore;
+
+    const gridEl = document.getElementById('grid');
+
+    function initGrid() {
+      grid = [];
+      gridEl.innerHTML = '';
+      for (let i = 0; i < gridSize * gridSize; i++) {
+        const value = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+        grid.push(value);
+        const tile = document.createElement('div');
+        tile.className = 'tile';
+        tile.textContent = value;
+        tile.setAttribute('data-index', i);
+        tile.addEventListener('click', () => selectTile(i));
+        gridEl.appendChild(tile);
+      }
+    }
+
+    let firstTile = null;
+    function selectTile(index) {
+      if (firstTile === null) {
+        firstTile = index;
+      } else {
+        swapTiles(firstTile, index);
+        firstTile = null;
+      }
+    }
+
+    function swapTiles(i, j) {
+      if (Math.abs(i - j) === 1 || Math.abs(i - j) === gridSize) {
+        const temp = grid[i];
+        grid[i] = grid[j];
+        grid[j] = temp;
+        updateGrid();
+        checkMatches();
+      }
+    }
+
+    function updateGrid() {
+      const tiles = document.querySelectorAll('.tile');
+      tiles.forEach((tile, idx) => {
+        tile.textContent = grid[idx];
+      });
+    }
+
+    function checkMatches() {
+      for (let i = 0; i < grid.length; i++) {
+        if (i % gridSize < gridSize - 2) {
+          const row = [i, i + 1, i + 2];
+          if (matchFound(row)) {
+            score += 10;
+            refill(row);
+          }
+        }
+        if (i < (gridSize * (gridSize - 2))) {
+          const col = [i, i + gridSize, i + gridSize * 2];
+          if (matchFound(col)) {
+            score += 10;
+            refill(col);
+          }
+        }
+      }
+      updateScore();
+    }
+
+    function matchFound(indices) {
+      const val = grid[indices[0]];
+      return indices.every(i => grid[i] === val);
+    }
+
+    function refill(indices) {
+      indices.forEach(i => {
+        grid[i] = codeSnippets[Math.floor(Math.random() * codeSnippets.length)];
+      });
+      updateGrid();
+    }
+
+    function updateScore() {
+      document.getElementById('score').textContent = score;
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('codeHigh', highScore);
+        document.getElementById('highScore').textContent = highScore;
+      }
+    }
+
+    function resetGame() {
+      score = 0;
+      document.getElementById('score').textContent = score;
+      initGrid();
+    }
+
+    initGrid();
+  </script>
+</body>
+</html>
