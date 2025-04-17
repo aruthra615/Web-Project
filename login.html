@@ -173,14 +173,41 @@
     function showLogin(role) {
       const formArea = document.getElementById('formArea');
       formArea.innerHTML = `
-        <form>
+        <form id="loginForm">
           <h3>Login as ${role.charAt(0).toUpperCase() + role.slice(1)}</h3>
           <label>Username</label>
-          <input type="text" required>
+          <input type="text" id="loginUsername" required>
           <label>Password</label>
-          <input type="password" required>
+          <input type="password" id="loginPassword" required>
           <button class="btn" type="submit">Login</button>
-        </form>
+        </form>`;
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+          event.preventDefault();
+          const username = document.getElementById('loginUsername').value;
+          const password = document.getElementById('loginPassword').value;
+
+          firebase.database().ref('registrations').once('value', (snapshot) => {
+            let found = false;
+            snapshot.forEach((child) => {
+              const val = child.val();
+              if (val.username === username && val.password === password) {
+                found = true;
+                const role = val.role;
+                if (role === 'student') {
+  if (val.degree && val.degree !== '') {
+    window.location.href = 'colhome.html';
+  } else {
+    window.location.href = 'stuhome.html';
+  }
+}
+                else if (role === 'teacher') window.location.href = 'teachhome.html';
+                else if (role === 'parent') window.location.href = 'parenthome.html';
+              }
+            });
+            if (!found) alert('Invalid credentials');
+          });
+        });
       `;
     }
 
@@ -357,6 +384,8 @@
         }
       }
       db.ref('registrations').push(data).then(() => {
+        alert("Registration successful!");
+        window.location.href = 'login.html';
         alert("Registration successful!");
         form.reset();
         document.getElementById('extraFields').innerHTML = '';
