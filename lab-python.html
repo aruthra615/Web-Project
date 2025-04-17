@@ -8,12 +8,69 @@
       background: #f8fff0;
       font-family: 'Courier New', monospace;
       margin: 0;
-      padding: 2rem;
+      padding: 0;
     }
 
+    /* ✅ Header Styles */
+    .game-header {
+      width: 100%;
+      background: #347c2c;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 1rem 2rem;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .game-header .left {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .nav-logo {
+      height: 38px;
+    }
+
+    .game-header h2 {
+      margin: 0;
+      color: #ffffff;
+      font-size: 1.5rem;
+    }
+
+    .game-header .right {
+      display: flex;
+      align-items: center;
+      gap: 1.2rem;
+    }
+
+    .dashboard-link {
+      text-decoration: none;
+      font-weight: 500;
+      color: #ffffff;
+    }
+
+    .logout-btn {
+      background: #ff4d4d;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: #cc0000;
+    }
+
+    /* ✅ Compiler UI */
     .container {
       max-width: 800px;
-      margin: auto;
+      margin: 3rem auto;
       background: white;
       padding: 2rem;
       border-radius: 10px;
@@ -62,17 +119,20 @@
   </style>
 </head>
 <body>
-      <header class="game-header">
-  <div class="left" style="display: flex; align-items: center; gap: 1rem;">
-    <img src="logo.png" alt="STEM Tool Logo" class="nav-logo" style="height: 40px;">
-    <h2 style="margin: 0; color: #0072ff;">Lab</h2>
-  </div>
-  <div class="right" style="display: flex; align-items: center; gap: 1.5rem;">
-    <a href="colhome.html" class="dashboard-link">Dashboard</a>
-    <a href="login.html" class="logout-btn">Logout</a>
-    <img src="icon.svg" alt="Profile" class="profile-icon" style="height: 32px;">
-  </div>
-</header>
+
+  <!-- ✅ Header -->
+  <header class="game-header">
+    <div class="left">
+      <img src="logo.png" alt="EduPulse Logo" class="nav-logo">
+      <h2>Lab</h2>
+    </div>
+    <div class="right">
+      <a href="colhome.html" class="dashboard-link">Dashboard</a>
+      <a href="login.html" class="logout-btn">Logout</a>
+    </div>
+  </header>
+
+  <!-- ✅ Compiler Tool -->
   <div class="container">
     <h1>Python Compiler (Offline Demo)</h1>
     <textarea id="code" spellcheck="false">print("Hello, Python!")</textarea>
@@ -100,5 +160,6 @@
       }, 1000);
     }
   </script>
+
 </body>
 </html>
