@@ -5,6 +5,8 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Login | STEM Teaching Tool</title>
   <link rel="stylesheet" href="style.css">
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
   <style>
     body {
       font-family: 'Montserrat', sans-serif;
@@ -131,6 +133,18 @@
   <div id="formArea"></div>
 
   <script>
+    const firebaseConfig = {
+      apiKey: "YOUR_API_KEY",
+      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+      databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
+      projectId: "YOUR_PROJECT_ID",
+      storageBucket: "YOUR_PROJECT_ID.appspot.com",
+      messagingSenderId: "YOUR_SENDER_ID",
+      appId: "YOUR_APP_ID"
+    };
+    firebase.initializeApp(firebaseConfig);
+    const db = firebase.database();
+
     function showLogin(role) {
       const formArea = document.getElementById('formArea');
       formArea.innerHTML = `
@@ -148,14 +162,18 @@
     function showRegister() {
       const formArea = document.getElementById('formArea');
       formArea.innerHTML = `
-        <form id="registerForm">
+        <form id="registerForm" onsubmit="submitRegistration(event)">
           <h3>Register</h3>
-          <label>First Name</label><input type="text" required>
-          <label>Middle Name</label><input type="text">
-          <label>Last Name</label><input type="text" required>
-          <label>Date of Birth</label><input type="date" required>
+          <label>Username</label><input type="text" name="username" required>
+          <label>Email</label><input type="email" name="email" required>
+          <label>Phone Number</label><input type="tel" name="phone" required>
+          <label>Password</label><input type="password" name="password" required>
+          <label>First Name</label><input type="text" name="firstName" required>
+          <label>Middle Name</label><input type="text" name="middleName">
+          <label>Last Name</label><input type="text" name="lastName" required>
+          <label>Date of Birth</label><input type="date" name="dob" required>
           <label>I am a:</label>
-          <select id="userType" onchange="handleUserType(this.value)">
+          <select id="userType" name="role" onchange="handleUserType(this.value)">
             <option value="">Select</option>
             <option value="student">Student</option>
             <option value="teacher">Teacher</option>
@@ -173,26 +191,98 @@
         addParentFields(container);
       } else if (value === 'teacher') {
         container.innerHTML = `
-          <label>School/College</label><input type="text" required>
-          <label>Employee/Faculty ID</label><input type="text" required>
-          <label>Subject</label><input type="text" required>
+          <label>School/College</label><input type="text" name="institution" required>
+          <label>Employee/Faculty ID</label><input type="text" name="employeeId" required>
+          <label>Subject</label><input type="text" name="subject" required>
         `;
       } else if (value === 'student') {
         container.innerHTML = `
-          <label>School/College</label><input type="text" required>
-          <label>Admission/Register Number</label><input type="text" required>
-          <label>Class/Standard/Year</label><input type="text" required>
+          <label>School/College</label><input type="text" name="institution" required>
+          <label>Admission/Register Number</label><input type="text" name="regNo" required>
+          <label>Class/Standard/Year</label><input type="text" name="class" required>
           <label>Degree (if college)</label>
-          <select>
+          <select name="degree">
             <option value="">Select</option>
-            <option value="BSc">B.Sc</option>
-            <option value="BA">B.A</option>
-            <option value="BCom">B.Com</option>
-            <option value="BTech">B.Tech</option>
-            <option value="BE">B.E</option>
-            <option value="MSc">M.Sc</option>
-            <option value="MTech">M.Tech</option>
+            <option value="BSc Physics">B.Sc Physics</option>
+            <option value="BSc Chemistry">B.Sc Chemistry</option>
+            <option value="BSc Mathematics">B.Sc Mathematics</option>
+            <option value="BSc Computer Science">B.Sc Computer Science</option>
+            <option value="BSc Biotechnology">B.Sc Biotechnology</option>
+            <option value="BSc Microbiology">B.Sc Microbiology</option>
+            <option value="BSc Zoology">B.Sc Zoology</option>
+            <option value="BSc Botany">B.Sc Botany</option>
+            <option value="BA English">B.A English</option>
+            <option value="BA History">B.A History</option>
+            <option value="BA Economics">B.A Economics</option>
+            <option value="BA Sociology">B.A Sociology</option>
+            <option value="BA Political Science">B.A Political Science</option>
+            <option value="BA Psychology">B.A Psychology</option>
+            <option value="BCom General">B.Com General</option>
+            <option value="BCom Accounting & Finance">B.Com Accounting & Finance</option>
+            <option value="BCom Banking and Insurance">B.Com Banking and Insurance</option>
+            <option value="BCom Computer Applications">B.Com Computer Applications</option>
+            <option value="BBA Management">BBA Management</option>
+            <option value="BBA International Business">BBA International Business</option>
+            <option value="BMS Management Studies">BMS Management Studies</option>
+            <option value="BCA Computer Applications">BCA Computer Applications</option>
+            <option value="BTech Computer Science">B.Tech Computer Science</option>
+            <option value="BTech Information Technology">B.Tech Information Technology</option>
+            <option value="BTech Electronics and Communication">B.Tech Electronics and Communication</option>
+            <option value="BTech Mechanical Engineering">B.Tech Mechanical Engineering</option>
+            <option value="BTech Civil Engineering">B.Tech Civil Engineering</option>
+            <option value="BTech Electrical Engineering">B.Tech Electrical Engineering</option>
+            <option value="BTech Artificial Intelligence">B.Tech Artificial Intelligence</option>
+            <option value="BTech Data Science">B.Tech Data Science</option>
+            <option value="BTech Biotechnology">B.Tech Biotechnology</option>
+            <option value="BE Electrical and Electronics">B.E Electrical and Electronics</option>
+            <option value="BE Electronics and Instrumentation">B.E Electronics and Instrumentation</option>
+            <option value="BE Biomedical Engineering">B.E Biomedical Engineering</option>
+            <option value="BE Mechatronics">B.E Mechatronics</option>
+            <option value="BE Aerospace Engineering">B.E Aerospace Engineering</option>
+            <option value="BArch Architecture">B.Arch Architecture</option>
+            <option value="BDes Fashion Design">B.Des Fashion Design</option>
+            <option value="BDes Interior Design">B.Des Interior Design</option>
+            <option value="BFA Fine Arts">BFA Fine Arts</option>
+            <option value="BPharm Pharmacy">B.Pharm Pharmacy</option>
+            <option value="BPT Physiotherapy">BPT Physiotherapy</option>
+            <option value="BNYS Naturopathy & Yoga">BNYS Naturopathy & Yoga</option>
+            <option value="BDS Dental Surgery">BDS Dental Surgery</option>
+            <option value="MBBS Medicine">MBBS Medicine</option>
+            <option value="BAMS Ayurveda">BAMS Ayurveda</option>
+            <option value="BHMS Homeopathy">BHMS Homeopathy</option>
+            <option value="BSc Nursing">B.Sc Nursing</option>
+            <option value="LLB Law">LLB Law</option>
+            <option value="BA LLB Law">BA LLB Law</option>
+            <option value="BBA LLB Law">BBA LLB Law</option>
+            <option value="MSc Physics">M.Sc Physics</option>
+            <option value="MSc Chemistry">M.Sc Chemistry</option>
+            <option value="MSc Mathematics">M.Sc Mathematics</option>
+            <option value="MSc Computer Science">M.Sc Computer Science</option>
+            <option value="MSc Biotechnology">M.Sc Biotechnology</option>
+            <option value="MA English">M.A English</option>
+            <option value="MA Economics">M.A Economics</option>
+            <option value="MA Sociology">M.A Sociology</option>
+            <option value="MA Psychology">M.A Psychology</option>
+            <option value="MBA General">MBA General</option>
+            <option value="MBA HR">MBA Human Resources</option>
+            <option value="MBA Marketing">MBA Marketing</option>
+            <option value="MBA Finance">MBA Finance</option>
+            <option value="MTech Computer Science">M.Tech Computer Science</option>
+            <option value="MTech Information Technology">M.Tech Information Technology</option>
+            <option value="MTech VLSI Design">M.Tech VLSI Design</option>
+            <option value="MTech Data Science">M.Tech Data Science</option>
+            <option value="MCA Computer Applications">MCA Computer Applications</option>
+            <option value="MPharm Pharmacy">M.Pharm Pharmacy</option>
+            <option value="MArch Architecture">M.Arch Architecture</option>
+            <option value="LLM Law">LLM Law</option>
+            <option value="MFA Fine Arts">MFA Fine Arts</option>
+            <option value="PhD Sciences">Ph.D Sciences</option>
+            <option value="PhD Engineering">Ph.D Engineering</option>
+            <option value="PhD Humanities">Ph.D Humanities</option>
+            <option value="PhD Law">Ph.D Law</option>
+            <option value="PhD Management">Ph.D Management</option>
           </select>
+
         `;
       } else {
         container.innerHTML = "";
@@ -219,12 +309,33 @@
       div.className = 'child-form';
       div.innerHTML = `
         <h4>Child Info</h4>
-        <label>Child Name</label><input type="text" required>
-        <label>Date of Birth</label><input type="date" required>
-        <label>School/College</label><input type="text" required>
-        <label>Relation to the Child</label><input type="text" required>
+        <label>Child Name</label><input type="text" name="childName[]" required>
+        <label>Date of Birth</label><input type="date" name="childDob[]" required>
+        <label>School/College</label><input type="text" name="childSchool[]" required>
+        <label>Relation to the Child</label><input type="text" name="relation[]" required>
       `;
       container.appendChild(div);
+    }
+
+    function submitRegistration(e) {
+      e.preventDefault();
+      const form = e.target;
+      const formData = new FormData(form);
+      const data = {};
+      for (let [key, value] of formData.entries()) {
+        if (key.includes('[]')) {
+          key = key.replace('[]', '');
+          if (!data[key]) data[key] = [];
+          data[key].push(value);
+        } else {
+          data[key] = value;
+        }
+      }
+      db.ref('registrations').push(data).then(() => {
+        alert("Registration successful!");
+        form.reset();
+        document.getElementById('extraFields').innerHTML = '';
+      });
     }
   </script>
 </body>
