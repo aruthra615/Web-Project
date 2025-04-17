@@ -1,8 +1,8 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Periodic Table Puzzle</title>
   <style>
     body {
@@ -16,25 +16,90 @@
       height: 100vh;
       overflow: hidden;
     }
+
+    .game-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #004a99;
+      color: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .game-header .left h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .game-header nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      margin-left: 2rem;
+    }
+
+    .game-header .right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .profile-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: white;
+      padding: 2px;
+      cursor: pointer;
+    }
+
+    .logout-btn {
+      background: #ff5e5e;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: #cc4b4b;
+    }
+
     h1 {
       color: white;
       margin: 1rem;
     }
+
+    .how-to-play {
+      color: #fff;
+      background: rgba(255, 255, 255, 0.2);
+      padding: 0.6rem 1rem;
+      border-radius: 8px;
+      margin-bottom: 1rem;
+      font-size: 1rem;
+      transition: opacity 0.3s ease;
+    }
+
     .scoreboard {
       color: white;
       font-size: 1.2rem;
       margin-bottom: 1rem;
     }
+
     .grid {
       display: grid;
       grid-template-columns: repeat(8, 60px);
       grid-template-rows: repeat(8, 60px);
       gap: 5px;
     }
+
     .tile {
       width: 60px;
       height: 60px;
-      background: white;
       border-radius: 10px;
       box-shadow: 0 4px 8px rgba(0,0,0,0.2);
       display: flex;
@@ -46,13 +111,16 @@
       cursor: pointer;
       transition: all 0.2s ease;
     }
+
     .tile:hover {
       transform: scale(1.05);
-      background: #e0f7fa;
+      opacity: 0.9;
     }
+
     .controls {
       margin-top: 1rem;
     }
+
     button {
       padding: 0.6rem 1.2rem;
       border: none;
@@ -64,6 +132,7 @@
       cursor: pointer;
       margin: 0 10px;
     }
+
     button:hover {
       background: #b2fefa;
       color: #006064;
@@ -71,7 +140,21 @@
   </style>
 </head>
 <body>
+  <header class="game-header">
+    <div class="left">
+      <h2>STEM Games</h2>
+      <nav>
+        <a href="stuhome.html">Dashboard</a>
+      </nav>
+    </div>
+    <div class="right">
+      <img src="icons/profile.svg" alt="Profile" class="profile-icon" />
+      <a href="login.html" class="logout-btn">Logout</a>
+    </div>
+  </header>
+
   <h1>Periodic Table Puzzle</h1>
+  <div class="how-to-play" id="howToPlay">Swap adjacent elements to form 3-in-a-row matches. Get points for each match!</div>
   <div class="scoreboard">High Score: <span id="highScore">0</span> | Current Score: <span id="currentScore">0</span></div>
   <div class="grid" id="gameGrid"></div>
   <div class="controls">
@@ -81,6 +164,17 @@
 
   <script>
     const elements = ['H', 'O', 'C', 'Na', 'Cl', 'Fe', 'K', 'Ca'];
+    const elementColors = {
+      'H': '#ffe0f0',
+      'O': '#e0f7fa',
+      'C': '#f0f4c3',
+      'Na': '#e1bee7',
+      'Cl': '#dcedc8',
+      'Fe': '#f8bbd0',
+      'K': '#d1c4e9',
+      'Ca': '#b2ebf2'
+    };
+
     let grid = [];
     let score = 0;
     let highScore = localStorage.getItem('ptpHighScore') || 0;
@@ -90,11 +184,13 @@
 
     function createBoard() {
       grid = [];
+      gameGrid.innerHTML = '';
       for (let i = 0; i < 64; i++) {
         const tile = document.createElement('div');
         tile.classList.add('tile');
         const el = elements[Math.floor(Math.random() * elements.length)];
         tile.textContent = el;
+        tile.style.backgroundColor = elementColors[el];
         tile.setAttribute('data-index', i);
         tile.addEventListener('click', () => handleTileClick(i));
         grid.push(el);
@@ -126,29 +222,33 @@
       const tiles = document.querySelectorAll('.tile');
       tiles.forEach((tile, i) => {
         tile.textContent = grid[i];
+        tile.style.backgroundColor = elementColors[grid[i]];
       });
     }
 
     function checkMatches() {
+      let matched = false;
       for (let i = 0; i < 64; i++) {
-        // Horizontal check
+        // Horizontal match
         if (i % 8 < 6) {
           const row = [i, i + 1, i + 2];
           if (sameElements(row)) {
             clearTiles(row);
+            matched = true;
             score += 10;
           }
         }
-        // Vertical check
+        // Vertical match
         if (i < 48) {
           const col = [i, i + 8, i + 16];
           if (sameElements(col)) {
             clearTiles(col);
+            matched = true;
             score += 10;
           }
         }
       }
-      updateScore();
+      if (matched) updateScore();
     }
 
     function sameElements(indices) {
@@ -158,13 +258,16 @@
 
     function clearTiles(indices) {
       indices.forEach(i => {
-        grid[i] = elements[Math.floor(Math.random() * elements.length)];
+        const newEl = elements[Math.floor(Math.random() * elements.length)];
+        grid[i] = newEl;
       });
       updateGrid();
     }
 
     function updateScore() {
       document.getElementById('currentScore').textContent = score;
+      if (score > 0) document.getElementById('howToPlay').style.display = 'none';
+
       if (score > highScore) {
         highScore = score;
         localStorage.setItem('ptpHighScore', highScore);
@@ -173,9 +276,9 @@
     }
 
     function resetGame() {
-      gameGrid.innerHTML = '';
       score = 0;
       document.getElementById('currentScore').textContent = 0;
+      document.getElementById('howToPlay').style.display = 'block';
       createBoard();
     }
 
@@ -187,3 +290,4 @@
   </script>
 </body>
 </html>
+
