@@ -1,391 +1,359 @@
 <!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Login | STEM Teaching Tool</title>
-  <link rel="stylesheet" href="style.css">
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
-  <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
-  <style>
-    body {
-      font-family: 'Montserrat', sans-serif;
-      background: #f8fbfd url('https://cdn.pixabay.com/photo/2017/01/31/13/14/science-2025796_1280.png') repeat;
-      background-size: contain;
-      padding: 0;
-      margin: 0;
-      overflow-x: hidden;
-      position: relative;
-    }
-    .navbar {
-      position: sticky;
-      top: 0;
-      z-index: 999;
-      background: #fff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
-    }
-    h2 {
-      text-align: center;
-      margin: 2rem 0 1rem;
-    }
-    .login-options, .form-container {
-      display: flex;
-      justify-content: center;
-      gap: 2rem;
-      flex-wrap: wrap;
-    }
-    .option {
-      text-align: center;
-      cursor: pointer;
-      padding: 1rem;
-      border-radius: 10px;
-      background: white;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
-      transition: transform 0.2s ease;
-    }
-    .option:hover {
-      transform: translateY(-5px);
-    }
-    .option img {
-      width: 100px;
-      height: 100px;
-      object-fit: cover;
-    }
-    form {
-      max-width: 600px;
-      margin: 2rem auto;
-      background: white;
-      padding: 2rem;
-      border-radius: 10px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
-    }
-    form label {
-      display: block;
-      margin-top: 1rem;
-    }
-    form input, form select {
-      width: 100%;
-      padding: 0.5rem;
-      margin-top: 0.3rem;
-      border-radius: 6px;
-      border: 1px solid #ccc;
-    }
-    .child-form {
-      border: 1px solid #ddd;
-      padding: 1rem;
-      border-radius: 8px;
-      margin-top: 1rem;
-    }
-    .btn {
-      margin-top: 2rem;
-      display: block;
-      width: 100%;
-      padding: 1rem;
-      background: #2079b0;
-      color: white;
-      border: none;
-      border-radius: 8px;
-      cursor: pointer;
-      font-size: 1rem;
-    }
-    .small-btn {
-      padding: 0.4rem 1.2rem;
-      font-size: 0.9rem;
-      background: #2079b0;
-      color: white;
-      border: none;
-      border-radius: 6px;
-      cursor: pointer;
-    }
-    .floating-icon {
-      position: absolute;
-      width: 50px;
-      height: 50px;
-      animation: floatIcon 8s infinite ease-in-out;
-      opacity: 0.2;
-      pointer-events: none;
-    }
-    @keyframes floatIcon {
-      0% { transform: translateY(0) rotate(0deg); }
-      50% { transform: translateY(-20px) rotate(180deg); }
-      100% { transform: translateY(0) rotate(360deg); }
-    }
-  </style>
-</head>
-<body>
-  <header class="navbar">
-    <div class="flex" style="justify-content: space-between; align-items: center; padding: 1rem 2rem;">
-      <a href="index.html" class="flex" style="align-items: center; text-decoration: none;">
-        <img src="logo.png" alt="STEM Tool Logo" style="height: 36px; margin-right: 10px;">
-        <span style="font-weight: bold; font-size: 1.2rem; color: #1f2d3d;">STEM Tool</span>
-      </a>
-      <nav>
-        <ul class="flex" style="gap: 1.5rem; list-style: none; margin: 0; padding: 0;">
-          <li><a href="index.html">Home</a></li>
-          <li><a href="about.html">About</a></li>
-          <li><a href="login.html">Login/Register</a></li>
-          <li><a href="about.html#faq">FAQs</a></li>
-          <li><a href="about.html#contact">Contact</a></li>
-        </ul>
-      </nav>
-    </div>
-  </header>
-
-  <h2>Select Your Role</h2>
-  <img src="https://cdn-icons-png.flaticon.com/512/1006/1006555.png" class="floating-icon" style="top:10%; left:5%;">
-  <img src="https://cdn-icons-png.flaticon.com/512/1134/1134861.png" class="floating-icon" style="top:30%; right:10%; animation-delay: 2s;">
-  <img src="https://cdn-icons-png.flaticon.com/512/609/609803.png" class="floating-icon" style="top:60%; left:20%; animation-delay: 4s;">
-
-  <div class="login-options">
-    <div class="option" onclick="showLogin('teacher')">
-      <img src="https://cdn-icons-png.flaticon.com/512/1995/1995470.png" alt="Teacher">
-      <p>Login as Teacher</p>
-    </div>
-    <div class="option" onclick="showLogin('student')">
-      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" alt="Student">
-      <p>Login as Student</p>
-    </div>
-    <div class="option" onclick="showLogin('parent')">
-      <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="Parent">
-      <p>Login as Parent</p>
-    </div>
-  </div>
-
-  <div style="text-align: center; margin-top: 2rem;">
-    <button class="small-btn" onclick="showRegister()">Register</button>
-  </div>
-
-  <div id="formArea"></div>
-
-  <script>
-    const firebaseConfig = {
-      apiKey: "YOUR_API_KEY",
-      authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
-      databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
-      projectId: "YOUR_PROJECT_ID",
-      storageBucket: "YOUR_PROJECT_ID.appspot.com",
-      messagingSenderId: "YOUR_SENDER_ID",
-      appId: "YOUR_APP_ID"
-    };
-    firebase.initializeApp(firebaseConfig);
-    const db = firebase.database();
-
-    function showLogin(role) {
-      const formArea = document.getElementById('formArea');
-      formArea.innerHTML = `$1`;
-formArea.scrollIntoView({ behavior: 'smooth' });
-
-        document.getElementById('loginForm').addEventListener('submit', function(event) {
-          event.preventDefault();
-          const username = document.getElementById('loginUsername').value;
-          const password = document.getElementById('loginPassword').value;
-
-          firebase.database().ref('registrations').once('value', (snapshot) => {
-            let found = false;
-            snapshot.forEach((child) => {
-              const val = child.val();
-              if (val.username === username && val.password === password) {
-                found = true;
-                const role = val.role;
-                if (role === 'student') {
-  if (val.degree && val.degree !== '') {
-    window.location.href = 'colhome.html';
-  } else {
-    window.location.href = 'stuhome.html';
-  }
-}
-                else if (role === 'teacher') window.location.href = 'teachhome.html';
-                else if (role === 'parent') window.location.href = 'parenthome.html';
-              }
-            });
-            if (!found) alert('Invalid credentials');
-          });
-        });
-      `;
-    }
-
-    function showRegister() {
-      const formArea = document.getElementById('formArea');
-      formArea.innerHTML = `
-        <form id="registerForm" onsubmit="handleValidatedRegistration(event)">`;
-formArea.scrollIntoView({ behavior: 'smooth' });
-          <h3>Register</h3>
-          <label>Username</label><input type="text" name="username" required>
-          <label>Email</label><input type="email" name="email" required>
-          <label>Phone Number</label><input type="tel" name="phone" required>
-          <label>Password</label><input type="password" name="password" required>
-          <label>First Name</label><input type="text" name="firstName" required>
-          <label>Middle Name</label><input type="text" name="middleName">
-          <label>Last Name</label><input type="text" name="lastName" required>
-          <label>Date of Birth</label><input type="date" name="dob" required>
-          <label>I am a:</label>
-          <select id="userType" name="role" onchange="handleUserType(this.value)">
-            <option value="">Select</option>
-            <option value="student">Student</option>
-            <option value="teacher">Teacher</option>
-            <option value="parent">Parent</option>
-          </select>
-          <div id="extraFields"></div>
-          <button class="btn" type="submit">Sign Up</button>
-        </form>
-      `;
-    }
-
-    function handleUserType(value) {
-      const container = document.getElementById('extraFields');
-      if (value === 'parent') {
-        addParentFields(container);
-      } else if (value === 'teacher') {
-        container.innerHTML = `
-          <label>School/College</label><input type="text" name="institution" required>
-          <label>Employee/Faculty ID</label><input type="text" name="employeeId" required>
-          <label>Subject</label><input type="text" name="subject" required>
-        `;
-      } else if (value === 'student') {
-        container.innerHTML = `
-          <label>School/College</label><input type="text" name="institution" required>
-          <label>Admission/Register Number</label><input type="text" name="regNo" required>
-          <label>Class/Standard/Year</label><input type="text" name="class" required>
-          <label>Degree (if college)</label>
-          <select name="degree">
-            <option value="">Select</option>
-            <option value="BSc Physics">B.Sc Physics</option>
-            <option value="BSc Chemistry">B.Sc Chemistry</option>
-            <option value="BSc Mathematics">B.Sc Mathematics</option>
-            <option value="BSc Computer Science">B.Sc Computer Science</option>
-            <option value="BSc Biotechnology">B.Sc Biotechnology</option>
-            <option value="BSc Microbiology">B.Sc Microbiology</option>
-            <option value="BSc Zoology">B.Sc Zoology</option>
-            <option value="BSc Botany">B.Sc Botany</option>
-            <option value="BA English">B.A English</option>
-            <option value="BA History">B.A History</option>
-            <option value="BA Economics">B.A Economics</option>
-            <option value="BA Sociology">B.A Sociology</option>
-            <option value="BA Political Science">B.A Political Science</option>
-            <option value="BA Psychology">B.A Psychology</option>
-            <option value="BCom General">B.Com General</option>
-            <option value="BCom Accounting & Finance">B.Com Accounting & Finance</option>
-            <option value="BCom Banking and Insurance">B.Com Banking and Insurance</option>
-            <option value="BCom Computer Applications">B.Com Computer Applications</option>
-            <option value="BBA Management">BBA Management</option>
-            <option value="BBA International Business">BBA International Business</option>
-            <option value="BMS Management Studies">BMS Management Studies</option>
-            <option value="BCA Computer Applications">BCA Computer Applications</option>
-            <option value="BTech Computer Science">B.Tech Computer Science</option>
-            <option value="BTech Information Technology">B.Tech Information Technology</option>
-            <option value="BTech Electronics and Communication">B.Tech Electronics and Communication</option>
-            <option value="BTech Mechanical Engineering">B.Tech Mechanical Engineering</option>
-            <option value="BTech Civil Engineering">B.Tech Civil Engineering</option>
-            <option value="BTech Electrical Engineering">B.Tech Electrical Engineering</option>
-            <option value="BTech Artificial Intelligence">B.Tech Artificial Intelligence</option>
-            <option value="BTech Data Science">B.Tech Data Science</option>
-            <option value="BTech Biotechnology">B.Tech Biotechnology</option>
-            <option value="BE Electrical and Electronics">B.E Electrical and Electronics</option>
-            <option value="BE Electronics and Instrumentation">B.E Electronics and Instrumentation</option>
-            <option value="BE Biomedical Engineering">B.E Biomedical Engineering</option>
-            <option value="BE Mechatronics">B.E Mechatronics</option>
-            <option value="BE Aerospace Engineering">B.E Aerospace Engineering</option>
-            <option value="BArch Architecture">B.Arch Architecture</option>
-            <option value="BDes Fashion Design">B.Des Fashion Design</option>
-            <option value="BDes Interior Design">B.Des Interior Design</option>
-            <option value="BFA Fine Arts">BFA Fine Arts</option>
-            <option value="BPharm Pharmacy">B.Pharm Pharmacy</option>
-            <option value="BPT Physiotherapy">BPT Physiotherapy</option>
-            <option value="BNYS Naturopathy & Yoga">BNYS Naturopathy & Yoga</option>
-            <option value="BDS Dental Surgery">BDS Dental Surgery</option>
-            <option value="MBBS Medicine">MBBS Medicine</option>
-            <option value="BAMS Ayurveda">BAMS Ayurveda</option>
-            <option value="BHMS Homeopathy">BHMS Homeopathy</option>
-            <option value="BSc Nursing">B.Sc Nursing</option>
-            <option value="LLB Law">LLB Law</option>
-            <option value="BA LLB Law">BA LLB Law</option>
-            <option value="BBA LLB Law">BBA LLB Law</option>
-            <option value="MSc Physics">M.Sc Physics</option>
-            <option value="MSc Chemistry">M.Sc Chemistry</option>
-            <option value="MSc Mathematics">M.Sc Mathematics</option>
-            <option value="MSc Computer Science">M.Sc Computer Science</option>
-            <option value="MSc Biotechnology">M.Sc Biotechnology</option>
-            <option value="MA English">M.A English</option>
-            <option value="MA Economics">M.A Economics</option>
-            <option value="MA Sociology">M.A Sociology</option>
-            <option value="MA Psychology">M.A Psychology</option>
-            <option value="MBA General">MBA General</option>
-            <option value="MBA HR">MBA Human Resources</option>
-            <option value="MBA Marketing">MBA Marketing</option>
-            <option value="MBA Finance">MBA Finance</option>
-            <option value="MTech Computer Science">M.Tech Computer Science</option>
-            <option value="MTech Information Technology">M.Tech Information Technology</option>
-            <option value="MTech VLSI Design">M.Tech VLSI Design</option>
-            <option value="MTech Data Science">M.Tech Data Science</option>
-            <option value="MCA Computer Applications">MCA Computer Applications</option>
-            <option value="MPharm Pharmacy">M.Pharm Pharmacy</option>
-            <option value="MArch Architecture">M.Arch Architecture</option>
-            <option value="LLM Law">LLM Law</option>
-            <option value="MFA Fine Arts">MFA Fine Arts</option>
-            <option value="PhD Sciences">Ph.D Sciences</option>
-            <option value="PhD Engineering">Ph.D Engineering</option>
-            <option value="PhD Humanities">Ph.D Humanities</option>
-            <option value="PhD Law">Ph.D Law</option>
-            <option value="PhD Management">Ph.D Management</option>
-          </select>
-
-        `;
-      } else {
-        container.innerHTML = "";
-      }
-    }
-
-    function addParentFields(container) {
-      container.innerHTML = '';
-      const childContainer = document.createElement('div');
-      childContainer.id = 'childSection';
-      addChild(childContainer);
-      const addBtn = document.createElement('button');
-      addBtn.innerText = 'Add Another Child';
-      addBtn.type = 'button';
-      addBtn.className = 'btn';
-      addBtn.style.marginTop = '1rem';
-      addBtn.onclick = () => addChild(childContainer);
-      container.appendChild(childContainer);
-      container.appendChild(addBtn);
-    }
-
-    function addChild(container) {
-      const div = document.createElement('div');
-      div.className = 'child-form';
-      div.innerHTML = `
-        <h4>Child Info</h4>
-        <label>Child Name</label><input type="text" name="childName[]" required>
-        <label>Date of Birth</label><input type="date" name="childDob[]" required>
-        <label>School/College</label><input type="text" name="childSchool[]" required>
-        <label>Relation to the Child</label><input type="text" name="relation[]" required>
-      `;
-      container.appendChild(div);
-    }
-
-    function submitRegistration(e) {
-      e.preventDefault();
-      const form = e.target;
-      const formData = new FormData(form);
-      const data = {};
-      for (let [key, value] of formData.entries()) {
-        if (key.includes('[]')) {
-          key = key.replace('[]', '');
-          if (!data[key]) data[key] = [];
-          data[key].push(value);
-        } else {
-          data[key] = value;
-        }
-      }
-      db.ref('registrations').push(data).then(() => {
-        alert("Registration successful!");
-        window.location.href = 'login.html';
-        alert("Registration successful!");
-        form.reset();
-        document.getElementById('extraFields').innerHTML = '';
-      });
-    }
-  </script>
-<script src="validation.js"></script>
-</body>
-</html>
+ <html lang="en">
+ <head>
+   <meta charset="UTF-8">
+   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+   <title>Login | STEM Teaching Tool</title>
+   <link rel="stylesheet" href="style.css">
+   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-app-compat.js"></script>
+   <script src="https://www.gstatic.com/firebasejs/9.22.1/firebase-database-compat.js"></script>
+   <style>
+     body {
+       font-family: 'Montserrat', sans-serif;
+       background: #f8fbfd url('https://cdn.pixabay.com/photo/2017/01/31/13/14/science-2025796_1280.png') repeat;
+       background-size: contain;
+       padding: 2rem;
+       overflow-x: hidden;
+       position: relative;
+     }
+     h2 {
+       text-align: center;
+       margin-bottom: 2rem;
+     }
+     .login-options, .form-container {
+       display: flex;
+       justify-content: center;
+       gap: 2rem;
+       flex-wrap: wrap;
+     }
+     .option {
+       text-align: center;
+       cursor: pointer;
+       padding: 1rem;
+       border-radius: 10px;
+       background: white;
+       box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+       transition: transform 0.2s ease;
+     }
+     .option:hover {
+       transform: translateY(-5px);
+     }
+     .option img {
+       width: 100px;
+       height: 100px;
+       object-fit: cover;
+     }
+     form {
+       max-width: 600px;
+       margin: 2rem auto;
+       background: white;
+       padding: 2rem;
+       border-radius: 10px;
+       box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+     }
+     form label {
+       display: block;
+       margin-top: 1rem;
+     }
+     form input, form select {
+       width: 100%;
+       padding: 0.5rem;
+       margin-top: 0.3rem;
+       border-radius: 6px;
+       border: 1px solid #ccc;
+     }
+     .child-form {
+       border: 1px solid #ddd;
+       padding: 1rem;
+       border-radius: 8px;
+       margin-top: 1rem;
+     }
+     .btn {
+       margin-top: 2rem;
+       display: block;
+       width: 100%;
+       padding: 1rem;
+       background: #2079b0;
+       color: white;
+       border: none;
+       border-radius: 8px;
+       cursor: pointer;
+       font-size: 1rem;
+     }
+     .small-btn {
+       padding: 0.4rem 1.2rem;
+       font-size: 0.9rem;
+       background: #2079b0;
+       color: white;
+       border: none;
+       border-radius: 6px;
+       cursor: pointer;
+     }
+     .floating-icon {
+       position: absolute;
+       width: 50px;
+       height: 50px;
+       animation: floatIcon 8s infinite ease-in-out;
+       opacity: 0.2;
+       pointer-events: none;
+     }
+     @keyframes floatIcon {
+       0% { transform: translateY(0) rotate(0deg); }
+       50% { transform: translateY(-20px) rotate(180deg); }
+       100% { transform: translateY(0) rotate(360deg); }
+     }
+   </style>
+ </head>
+   <header class="navbar">
+   <div class="flex" style="justify-content: space-between; align-items: center; padding: 1rem 2rem;">
+     <a href="index.html" class="flex" style="align-items: center;">
+       <img src="logo.png" alt="STEM Tool Logo" style="height: 36px; margin-right: 10px;">
+       <span style="font-weight: bold; font-size: 1.2rem; color: #1f2d3d;">STEM Tool</span>
+     </a>
+     <nav>
+       <ul class="flex" style="gap: 1.5rem; list-style: none;">
+         <li><a href="index.html">Home</a></li>
+         <li><a href="about.html">About</a></li>
+         <li><a href="login.html">Login/Register</a></li>
+         <li><a href="about.html#faq">FAQs</a></li>
+         <li><a href="about.html#contact">Contact</a></li>
+       </ul>
+     </nav>
+   </div>
+ </header>
+ <body>
+   <h2>Select Your Role</h2>
+ 
+   <img src="https://cdn-icons-png.flaticon.com/512/1006/1006555.png" class="floating-icon" style="top:10%; left:5%;">
+   <img src="https://cdn-icons-png.flaticon.com/512/1134/1134861.png" class="floating-icon" style="top:30%; right:10%; animation-delay: 2s;">
+   <img src="https://cdn-icons-png.flaticon.com/512/609/609803.png" class="floating-icon" style="top:60%; left:20%; animation-delay: 4s;">
+ 
+   <div class="login-options">
+     <div class="option" onclick="showLogin('teacher')">
+       <img src="https://cdn-icons-png.flaticon.com/512/1995/1995470.png" alt="Teacher">
+       <p>Login as Teacher</p>
+     </div>
+     <div class="option" onclick="showLogin('student')">
+       <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" alt="Student">
+       <p>Login as Student</p>
+     </div>
+     <div class="option" onclick="showLogin('parent')">
+       <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="Parent">
+       <p>Login as Parent</p>
+     </div>
+   </div>
+ 
+   <div style="text-align: center; margin-top: 2rem;">
+     <button class="small-btn" onclick="showRegister()">Register</button>
+   </div>
+ 
+   <div id="formArea"></div>
+ 
+   <script>
+     const firebaseConfig = {
+       apiKey: "YOUR_API_KEY",
+       authDomain: "YOUR_PROJECT_ID.firebaseapp.com",
+       databaseURL: "https://YOUR_PROJECT_ID.firebaseio.com",
+       projectId: "YOUR_PROJECT_ID",
+       storageBucket: "YOUR_PROJECT_ID.appspot.com",
+       messagingSenderId: "YOUR_SENDER_ID",
+       appId: "YOUR_APP_ID"
+     };
+     firebase.initializeApp(firebaseConfig);
+     const db = firebase.database();
+ 
+     function showLogin(role) {
+       const formArea = document.getElementById('formArea');
+       formArea.innerHTML = `
+         <form>
+           <h3>Login as ${role.charAt(0).toUpperCase() + role.slice(1)}</h3>
+           <label>Username</label>
+           <input type="text" required>
+           <label>Password</label>
+           <input type="password" required>
+           <button class="btn" type="submit">Login</button>
+         </form>
+       `;
+     }
+ 
+     function showRegister() {
+       const formArea = document.getElementById('formArea');
+       formArea.innerHTML = `
+         <form id="registerForm" onsubmit="submitRegistration(event)">
+           <h3>Register</h3>
+           <label>Username</label><input type="text" name="username" required>
+           <label>Email</label><input type="email" name="email" required>
+           <label>Phone Number</label><input type="tel" name="phone" required>
+           <label>Password</label><input type="password" name="password" required>
+           <label>First Name</label><input type="text" name="firstName" required>
+           <label>Middle Name</label><input type="text" name="middleName">
+           <label>Last Name</label><input type="text" name="lastName" required>
+           <label>Date of Birth</label><input type="date" name="dob" required>
+           <label>I am a:</label>
+           <select id="userType" name="role" onchange="handleUserType(this.value)">
+             <option value="">Select</option>
+             <option value="student">Student</option>
+             <option value="teacher">Teacher</option>
+             <option value="parent">Parent</option>
+           </select>
+           <div id="extraFields"></div>
+           <button class="btn" type="submit">Sign Up</button>
+         </form>
+       `;
+     }
+ 
+     function handleUserType(value) {
+       const container = document.getElementById('extraFields');
+       if (value === 'parent') {
+         addParentFields(container);
+       } else if (value === 'teacher') {
+         container.innerHTML = `
+           <label>School/College</label><input type="text" name="institution" required>
+           <label>Employee/Faculty ID</label><input type="text" name="employeeId" required>
+           <label>Subject</label><input type="text" name="subject" required>
+         `;
+       } else if (value === 'student') {
+         container.innerHTML = `
+           <label>School/College</label><input type="text" name="institution" required>
+           <label>Admission/Register Number</label><input type="text" name="regNo" required>
+           <label>Class/Standard/Year</label><input type="text" name="class" required>
+           <label>Degree (if college)</label>
+           <select name="degree">
+             <option value="">Select</option>
+             <option value="BSc Physics">B.Sc Physics</option>
+             <option value="BSc Chemistry">B.Sc Chemistry</option>
+             <option value="BSc Mathematics">B.Sc Mathematics</option>
+             <option value="BSc Computer Science">B.Sc Computer Science</option>
+             <option value="BSc Biotechnology">B.Sc Biotechnology</option>
+             <option value="BSc Microbiology">B.Sc Microbiology</option>
+             <option value="BSc Zoology">B.Sc Zoology</option>
+             <option value="BSc Botany">B.Sc Botany</option>
+             <option value="BA English">B.A English</option>
+             <option value="BA History">B.A History</option>
+             <option value="BA Economics">B.A Economics</option>
+             <option value="BA Sociology">B.A Sociology</option>
+             <option value="BA Political Science">B.A Political Science</option>
+             <option value="BA Psychology">B.A Psychology</option>
+             <option value="BCom General">B.Com General</option>
+             <option value="BCom Accounting & Finance">B.Com Accounting & Finance</option>
+             <option value="BCom Banking and Insurance">B.Com Banking and Insurance</option>
+             <option value="BCom Computer Applications">B.Com Computer Applications</option>
+             <option value="BBA Management">BBA Management</option>
+             <option value="BBA International Business">BBA International Business</option>
+             <option value="BMS Management Studies">BMS Management Studies</option>
+             <option value="BCA Computer Applications">BCA Computer Applications</option>
+             <option value="BTech Computer Science">B.Tech Computer Science</option>
+             <option value="BTech Information Technology">B.Tech Information Technology</option>
+             <option value="BTech Electronics and Communication">B.Tech Electronics and Communication</option>
+             <option value="BTech Mechanical Engineering">B.Tech Mechanical Engineering</option>
+             <option value="BTech Civil Engineering">B.Tech Civil Engineering</option>
+             <option value="BTech Electrical Engineering">B.Tech Electrical Engineering</option>
+             <option value="BTech Artificial Intelligence">B.Tech Artificial Intelligence</option>
+             <option value="BTech Data Science">B.Tech Data Science</option>
+             <option value="BTech Biotechnology">B.Tech Biotechnology</option>
+             <option value="BE Electrical and Electronics">B.E Electrical and Electronics</option>
+             <option value="BE Electronics and Instrumentation">B.E Electronics and Instrumentation</option>
+             <option value="BE Biomedical Engineering">B.E Biomedical Engineering</option>
+             <option value="BE Mechatronics">B.E Mechatronics</option>
+             <option value="BE Aerospace Engineering">B.E Aerospace Engineering</option>
+             <option value="BArch Architecture">B.Arch Architecture</option>
+             <option value="BDes Fashion Design">B.Des Fashion Design</option>
+             <option value="BDes Interior Design">B.Des Interior Design</option>
+             <option value="BFA Fine Arts">BFA Fine Arts</option>
+             <option value="BPharm Pharmacy">B.Pharm Pharmacy</option>
+             <option value="BPT Physiotherapy">BPT Physiotherapy</option>
+             <option value="BNYS Naturopathy & Yoga">BNYS Naturopathy & Yoga</option>
+             <option value="BDS Dental Surgery">BDS Dental Surgery</option>
+             <option value="MBBS Medicine">MBBS Medicine</option>
+             <option value="BAMS Ayurveda">BAMS Ayurveda</option>
+             <option value="BHMS Homeopathy">BHMS Homeopathy</option>
+             <option value="BSc Nursing">B.Sc Nursing</option>
+             <option value="LLB Law">LLB Law</option>
+             <option value="BA LLB Law">BA LLB Law</option>
+             <option value="BBA LLB Law">BBA LLB Law</option>
+             <option value="MSc Physics">M.Sc Physics</option>
+             <option value="MSc Chemistry">M.Sc Chemistry</option>
+             <option value="MSc Mathematics">M.Sc Mathematics</option>
+             <option value="MSc Computer Science">M.Sc Computer Science</option>
+             <option value="MSc Biotechnology">M.Sc Biotechnology</option>
+             <option value="MA English">M.A English</option>
+             <option value="MA Economics">M.A Economics</option>
+             <option value="MA Sociology">M.A Sociology</option>
+             <option value="MA Psychology">M.A Psychology</option>
+             <option value="MBA General">MBA General</option>
+             <option value="MBA HR">MBA Human Resources</option>
+             <option value="MBA Marketing">MBA Marketing</option>
+             <option value="MBA Finance">MBA Finance</option>
+             <option value="MTech Computer Science">M.Tech Computer Science</option>
+             <option value="MTech Information Technology">M.Tech Information Technology</option>
+             <option value="MTech VLSI Design">M.Tech VLSI Design</option>
+             <option value="MTech Data Science">M.Tech Data Science</option>
+             <option value="MCA Computer Applications">MCA Computer Applications</option>
+             <option value="MPharm Pharmacy">M.Pharm Pharmacy</option>
+             <option value="MArch Architecture">M.Arch Architecture</option>
+             <option value="LLM Law">LLM Law</option>
+             <option value="MFA Fine Arts">MFA Fine Arts</option>
+             <option value="PhD Sciences">Ph.D Sciences</option>
+             <option value="PhD Engineering">Ph.D Engineering</option>
+             <option value="PhD Humanities">Ph.D Humanities</option>
+             <option value="PhD Law">Ph.D Law</option>
+             <option value="PhD Management">Ph.D Management</option>
+           </select>
+ 
+         `;
+       } else {
+         container.innerHTML = "";
+       }
+     }
+ 
+     function addParentFields(container) {
+       container.innerHTML = '';
+       const childContainer = document.createElement('div');
+       childContainer.id = 'childSection';
+       addChild(childContainer);
+       const addBtn = document.createElement('button');
+       addBtn.innerText = 'Add Another Child';
+       addBtn.type = 'button';
+       addBtn.className = 'btn';
+       addBtn.style.marginTop = '1rem';
+       addBtn.onclick = () => addChild(childContainer);
+       container.appendChild(childContainer);
+       container.appendChild(addBtn);
+     }
+ 
+     function addChild(container) {
+       const div = document.createElement('div');
+       div.className = 'child-form';
+       div.innerHTML = `
+         <h4>Child Info</h4>
+         <label>Child Name</label><input type="text" name="childName[]" required>
+         <label>Date of Birth</label><input type="date" name="childDob[]" required>
+         <label>School/College</label><input type="text" name="childSchool[]" required>
+         <label>Relation to the Child</label><input type="text" name="relation[]" required>
+       `;
+       container.appendChild(div);
+     }
+ 
+     function submitRegistration(e) {
+       e.preventDefault();
+       const form = e.target;
+       const formData = new FormData(form);
+       const data = {};
+       for (let [key, value] of formData.entries()) {
+         if (key.includes('[]')) {
+           key = key.replace('[]', '');
+           if (!data[key]) data[key] = [];
+           data[key].push(value);
+         } else {
+           data[key] = value;
+         }
+       }
+       db.ref('registrations').push(data).then(() => {
+         alert("Registration successful!");
+         form.reset();
+         document.getElementById('extraFields').innerHTML = '';
+       });
+     }
+   </script>
+ </body>
+ </html>
