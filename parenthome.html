@@ -1,0 +1,135 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Parent Dashboard | STEM Teaching Tool</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #f0f8ff;
+      margin: 0;
+    }
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar a {
+      text-decoration: none;
+      color: #1f2d3d;
+      font-weight: bold;
+      margin-left: 1.5rem;
+    }
+    .dashboard {
+      padding: 2rem;
+    }
+    .section-title {
+      margin: 1.5rem 0 1rem;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+      gap: 1.5rem;
+    }
+    .tile {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
+      padding: 1.5rem;
+      text-align: center;
+      transition: transform 0.2s;
+      color: #000;
+    }
+    .tile:hover {
+      transform: translateY(-5px);
+    }
+    .badge-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .badge {
+      background: #fff;
+      padding: 0.6rem 1rem;
+      border-radius: 30px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
+      font-size: 0.9rem;
+      color: #000;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <a href="index.html">
+      <img src="logo.png" alt="STEM Tool Logo" style="height: 36px; vertical-align: middle; margin-right: 10px;" />
+      STEM Tool
+    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="login.html">Logout</a>
+    </nav>
+  </header>
+
+  <div class="dashboard">
+    <div class="section-title">Welcome, Parent!</div>
+    <div class="tile">Here's how your child is progressing in STEM learning!</div>
+
+    <div class="section-title">My Children</div>
+    <div class="grid">
+      <div class="tile">Name: student<br/>Class: 9th Grade<br/>School: Green Hills High</div>
+      <div class="tile">Name: student1<br/>Year: B.Sc 1st Year<br/>College: Bright Future College</div>
+    </div>
+
+    <div class="section-title">Progress Overview</div>
+    <div class="grid">
+      <div class="tile">student - Labs Completed: 10<br/>Time Spent: 2.5h this week</div>
+      <div class="tile">student1 - Labs Completed: 15<br/>Time Spent: 4.5h this week</div>
+    </div>
+
+    <div class="section-title">Virtual Lab Insights</div>
+    <div class="grid">
+      <div class="tile">student - Last Visited: Physics Lab</div>
+      <div class="tile">student1 - Last Visited: Data Structures Lab</div>
+    </div>
+
+    <div class="section-title">Achievements</div>
+    <div class="badge-grid">
+      <div class="badge">Circuit Solver</div>
+      <div class="badge">Periodic Puzzle Master</div>
+      <div class="badge">Quantum Quick Thinker</div>
+    </div>
+
+    <div class="section-title">Teacher Announcements</div>
+    <div class="grid">
+      <div class="tile">Lab deadline extended for Grade 9</div>
+      <div class="tile">Final review quiz scheduled on Friday</div>
+    </div>
+
+    <div class="section-title">Reports</div>
+    <div class="grid">
+      <div class="tile">Download Weekly Progress PDF</div>
+      <div class="tile">Download Badge Certificate</div>
+      <div class="tile">View Quiz Scores</div>
+    </div>
+
+    <div class="section-title">Parent Settings</div>
+    <div class="grid">
+      <div class="tile">Edit Profile</div>
+      <div class="tile">Manage Children</div>
+      <div class="tile">Contact Teachers</div>
+    </div>
+  </div>
+</body>
+</html>
