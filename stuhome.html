@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Student Dashboard | STEM Teaching Tool</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #f0f8ff;
+      margin: 0;
+    }
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.03);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+    .navbar a {
+      text-decoration: none;
+      color: #1f2d3d;
+      font-weight: bold;
+    }
+    .dashboard {
+      padding: 2rem;
+    }
+    .info-box {
+      background: #e6f2ff;
+      padding: 1.5rem;
+      border-radius: 10px;
+      text-align: center;
+      font-size: 1.1rem;
+      margin-bottom: 2rem;
+    }
+    .section-title {
+      margin: 1.5rem 0 0.5rem;
+      font-weight: bold;
+      font-size: 1.2rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+      gap: 1.5rem;
+    }
+    .tile {
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+      padding: 1rem;
+      text-align: center;
+      transition: transform 0.2s;
+    }
+    .tile:hover {
+      transform: translateY(-5px);
+    }
+    .tile img {
+      width: 70px;
+      height: 70px;
+      object-fit: contain;
+      margin-bottom: 0.5rem;
+    }
+    .badge-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 1rem;
+      margin-top: 1rem;
+    }
+    .badge {
+      background: #fff;
+      padding: 0.6rem 1rem;
+      border-radius: 30px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.1);
+      font-size: 0.9rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <a href="index.html">
+      <img src="logo.png" alt="STEM Tool Logo" style="height: 36px; vertical-align: middle; margin-right: 10px;">
+      STEM Tool
+    </a>
+    <nav>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <a href="login.html">Logout</a>
+    </nav>
+  </header>
+
+  <div class="dashboard">
+    <div class="info-box">
+      Welcome to your dashboard! Here you can access your labs and educational games.
+    </div>
+
+    <div class="section-title">Recently Visited</div>
+    <div class="grid">
+      <div class="tile">
+  <a href="lab-physics.html">
+    <img src="https://cdn-icons-png.flaticon.com/512/2770/2770642.png" alt="Physics">
+    <div>Physics</div>
+  </a>
+</div>
+    </div>
+
+    <div class="section-title">Subject Labs</div>
+    <div class="grid">
+      <div class="tile">
+  <a href="lab-chemistry.html">
+    <img src="https://cdn-icons-png.flaticon.com/512/2913/2913461.png" alt="Chemistry">
+    <div>Chemistry</div>
+  </a>
+</div>
+      <div class="tile">
+  <a href="lab-physics.html">
+    <img src="https://cdn-icons-png.flaticon.com/512/2770/2770642.png" alt="Physics">
+    <div>Physics</div>
+  </a>
+</div>
+      <div class="tile">
+  <a href="lab-biology.html">
+    <img src="https://cdn-icons-png.flaticon.com/512/4081/4081309.png" alt="Biology">
+    <div>Biology</div>
+  </a>
+</div>
+      <div class="tile">
+  <a href="lab-maths.html">
+    <img src="https://cdn-icons-png.flaticon.com/512/2554/2554975.png" alt="Maths">
+    <div>Mathematics</div>
+  </a>
+</div>
+    </div>
+
+    <div class="section-title">Educational Games</div>
+    <div class="grid">
+      <div class="tile">
+        <a href="game-periodic.html">
+          <img src="/mnt/data/A_2D_digital_illustration_displays_an_educational_.png" alt="Periodic Game">
+          <div>Periodic Table Puzzle</div>
+        </a>
+      </div>
+      <div class="tile">
+        <a href="game-magnet.html">
+          <img src="https://cdn-icons-png.flaticon.com/512/1014/1014753.png" alt="Magnet Game">
+          <div>Magnet Maze Challenge</div>
+        </a>
+      </div>
+      <div class="tile">
+        <a href="game-cell.html">
+          <img src="https://cdn-icons-png.flaticon.com/512/726/726003.png" alt="Cell Game">
+          <div>Cell Structure Quest</div>
+        </a>
+      </div>
+    </div>
+
+    <div class="section-title">Badges Earned</div>
+    <div class="badge-grid">
+      <div class="badge">Chemistry Champ</div>
+      <div class="badge">Physics Prodigy</div>
+      <div class="badge">Biology Explorer</div>
+      <div class="badge">Math Wizard</div>
+    </div>
+  </div>
+</body>
+</html>
