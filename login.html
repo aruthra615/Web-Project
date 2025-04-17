@@ -259,6 +259,25 @@
     }
       function handleRegister(event) {
       event.preventDefault();
+      const form = event.target;
+      const username = form.querySelector('input[type="text"]').value;
+      const password = form.querySelector('input[type="password"]').value;
+      const role = form.querySelector('select#userType').value;
+
+      if (!username || !password || !role) {
+        alert("Please fill out all required fields including role.");
+        return;
+      }
+
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      const existing = users.find(user => user.username === username);
+      if (existing) {
+        alert("Username already exists. Please choose another.");
+        return;
+      }
+
+      users.push({ username, password, role });
+      localStorage.setItem('users', JSON.stringify(users));
       alert("Registration successful! Redirecting to login...");
       window.location.reload();
     }
@@ -267,13 +286,15 @@
       event.preventDefault();
       const username = event.target.querySelector('input[type="text"]').value;
       const password = event.target.querySelector('input[type="password"]').value;
+      const users = JSON.parse(localStorage.getItem('users')) || [];
+      const user = users.find(u => u.username === username && u.password === password);
 
-      // Simulated credential verification
-      if (!username || !password) {
-        alert('Please enter valid credentials');
+      if (!user) {
+        alert('Invalid credentials');
         return;
       }
 
+      role = user.role;
       if (role === 'student') {
         const isCollege = confirm("Are you a college student?");
         window.location.href = isCollege ? 'colhome.html' : 'stuhome.html';
