@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>JavaScript Compiler Simulation</title>
+  <style>
+    body {
+      background: #1e1e1e;
+      color: #f8f8f8;
+      font-family: 'Courier New', monospace;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 900px;
+      margin: auto;
+      background: #2b2b2b;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 15px rgba(0, 255, 150, 0.08);
+    }
+
+    h1 {
+      text-align: center;
+      color: #00ffcc;
+    }
+
+    textarea {
+      width: 100%;
+      height: 250px;
+      background: #111;
+      color: #00ffcc;
+      padding: 1rem;
+      border: none;
+      border-radius: 8px;
+      font-size: 15px;
+      resize: vertical;
+    }
+
+    button {
+      margin-top: 1rem;
+      padding: 0.75rem 2rem;
+      font-size: 16px;
+      background-color: #00ffcc;
+      color: #111;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #00cc99;
+    }
+
+    .terminal {
+      margin-top: 2rem;
+      background: #000;
+      color: #0f0;
+      padding: 1rem;
+      height: 200px;
+      overflow-y: auto;
+      border-radius: 6px;
+      white-space: pre-wrap;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>🟢 JavaScript Compiler Simulation</h1>
+    <textarea id="code">// Write your JS code here\nconsole.log("Hello, World!");</textarea>
+    <button onclick="simulateJSCompile()">Compile & Run</button>
+    <div class="terminal" id="terminal">// Output will appear here...</div>
+  </div>
+
+  <script>
+    function simulateJSCompile() {
+      const code = document.getElementById("code").value;
+      const terminal = document.getElementById("terminal");
+
+      terminal.innerText = "Compiling JavaScript code...\n";
+
+      setTimeout(() => {
+        terminal.innerText += "Syntax checking...\n";
+
+        try {
+          new Function(code); // try compiling JS
+        } catch (err) {
+          terminal.innerText += `Syntax Error: ${err.message}\nCompilation failed.`;
+          return;
+        }
+
+        terminal.innerText += "Compilation successful!\nRunning script...\n";
+
+        setTimeout(() => {
+          try {
+            let output = [];
+            const originalConsole = console.log;
+            console.log = function (...args) {
+              output.push(args.join(" "));
+            };
+
+            new Function(code)(); // run JS code
+
+            console.log = originalConsole;
+            terminal.innerText += "Output:\n" + (output.length ? output.join("\n") : "[No output]");
+          } catch (err) {
+            terminal.innerText += `Runtime Error: ${err.message}`;
+          }
+        }, 1000);
+      }, 1000);
+    }
+  </script>
+</body>
+</html>
