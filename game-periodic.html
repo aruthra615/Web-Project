@@ -1,0 +1,189 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Periodic Table Puzzle</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(to right, #b2fefa, #0ed2f7);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      height: 100vh;
+      overflow: hidden;
+    }
+    h1 {
+      color: white;
+      margin: 1rem;
+    }
+    .scoreboard {
+      color: white;
+      font-size: 1.2rem;
+      margin-bottom: 1rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(8, 60px);
+      grid-template-rows: repeat(8, 60px);
+      gap: 5px;
+    }
+    .tile {
+      width: 60px;
+      height: 60px;
+      background: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: bold;
+      font-size: 1rem;
+      color: #333;
+      cursor: pointer;
+      transition: all 0.2s ease;
+    }
+    .tile:hover {
+      transform: scale(1.05);
+      background: #e0f7fa;
+    }
+    .controls {
+      margin-top: 1rem;
+    }
+    button {
+      padding: 0.6rem 1.2rem;
+      border: none;
+      background: #fff;
+      color: #0ed2f7;
+      font-weight: bold;
+      border-radius: 8px;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.2);
+      cursor: pointer;
+      margin: 0 10px;
+    }
+    button:hover {
+      background: #b2fefa;
+      color: #006064;
+    }
+  </style>
+</head>
+<body>
+  <h1>Periodic Table Puzzle</h1>
+  <div class="scoreboard">High Score: <span id="highScore">0</span> | Current Score: <span id="currentScore">0</span></div>
+  <div class="grid" id="gameGrid"></div>
+  <div class="controls">
+    <button onclick="resetGame()">Restart</button>
+    <button onclick="showHelp()">Help</button>
+  </div>
+
+  <script>
+    const elements = ['H', 'O', 'C', 'Na', 'Cl', 'Fe', 'K', 'Ca'];
+    let grid = [];
+    let score = 0;
+    let highScore = localStorage.getItem('ptpHighScore') || 0;
+    document.getElementById('highScore').textContent = highScore;
+
+    const gameGrid = document.getElementById('gameGrid');
+
+    function createBoard() {
+      grid = [];
+      for (let i = 0; i < 64; i++) {
+        const tile = document.createElement('div');
+        tile.classList.add('tile');
+        const el = elements[Math.floor(Math.random() * elements.length)];
+        tile.textContent = el;
+        tile.setAttribute('data-index', i);
+        tile.addEventListener('click', () => handleTileClick(i));
+        grid.push(el);
+        gameGrid.appendChild(tile);
+      }
+    }
+
+    let firstSelection = null;
+    function handleTileClick(index) {
+      if (firstSelection === null) {
+        firstSelection = index;
+      } else {
+        swapTiles(firstSelection, index);
+        firstSelection = null;
+      }
+    }
+
+    function swapTiles(i, j) {
+      if (Math.abs(i - j) === 1 || Math.abs(i - j) === 8) {
+        const temp = grid[i];
+        grid[i] = grid[j];
+        grid[j] = temp;
+        updateGrid();
+        checkMatches();
+      }
+    }
+
+    function updateGrid() {
+      const tiles = document.querySelectorAll('.tile');
+      tiles.forEach((tile, i) => {
+        tile.textContent = grid[i];
+      });
+    }
+
+    function checkMatches() {
+      for (let i = 0; i < 64; i++) {
+        // Horizontal check
+        if (i % 8 < 6) {
+          const row = [i, i + 1, i + 2];
+          if (sameElements(row)) {
+            clearTiles(row);
+            score += 10;
+          }
+        }
+        // Vertical check
+        if (i < 48) {
+          const col = [i, i + 8, i + 16];
+          if (sameElements(col)) {
+            clearTiles(col);
+            score += 10;
+          }
+        }
+      }
+      updateScore();
+    }
+
+    function sameElements(indices) {
+      const val = grid[indices[0]];
+      return indices.every(i => grid[i] === val);
+    }
+
+    function clearTiles(indices) {
+      indices.forEach(i => {
+        grid[i] = elements[Math.floor(Math.random() * elements.length)];
+      });
+      updateGrid();
+    }
+
+    function updateScore() {
+      document.getElementById('currentScore').textContent = score;
+      if (score > highScore) {
+        highScore = score;
+        localStorage.setItem('ptpHighScore', highScore);
+        document.getElementById('highScore').textContent = highScore;
+      }
+    }
+
+    function resetGame() {
+      gameGrid.innerHTML = '';
+      score = 0;
+      document.getElementById('currentScore').textContent = 0;
+      createBoard();
+    }
+
+    function showHelp() {
+      alert("Swap adjacent elements to form sets of 3 or more matching ones. Earn points for each match! Try to beat your high score!");
+    }
+
+    createBoard();
+  </script>
+</body>
+</html>
