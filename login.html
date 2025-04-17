@@ -12,13 +12,21 @@
       font-family: 'Montserrat', sans-serif;
       background: #f8fbfd url('https://cdn.pixabay.com/photo/2017/01/31/13/14/science-2025796_1280.png') repeat;
       background-size: contain;
-      padding: 2rem;
+      padding: 0;
+      margin: 0;
       overflow-x: hidden;
       position: relative;
     }
+    .navbar {
+      position: sticky;
+      top: 0;
+      z-index: 999;
+      background: #fff;
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+    }
     h2 {
       text-align: center;
-      margin-bottom: 2rem;
+      margin: 2rem 0 1rem;
     }
     .login-options, .form-container {
       display: flex;
@@ -104,26 +112,26 @@
     }
   </style>
 </head>
-  <header class="navbar">
-  <div class="flex" style="justify-content: space-between; align-items: center; padding: 1rem 2rem;">
-    <a href="index.html" class="flex" style="align-items: center;">
-      <img src="logo.png" alt="STEM Tool Logo" style="height: 36px; margin-right: 10px;">
-      <span style="font-weight: bold; font-size: 1.2rem; color: #1f2d3d;">STEM Tool</span>
-    </a>
-    <nav>
-      <ul class="flex" style="gap: 1.5rem; list-style: none;">
-        <li><a href="index.html">Home</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="login.html">Login/Register</a></li>
-        <li><a href="about.html#faq">FAQs</a></li>
-        <li><a href="about.html#contact">Contact</a></li>
-      </ul>
-    </nav>
-  </div>
-</header>
 <body>
-  <h2>Select Your Role</h2>
+  <header class="navbar">
+    <div class="flex" style="justify-content: space-between; align-items: center; padding: 1rem 2rem;">
+      <a href="index.html" class="flex" style="align-items: center; text-decoration: none;">
+        <img src="logo.png" alt="STEM Tool Logo" style="height: 36px; margin-right: 10px;">
+        <span style="font-weight: bold; font-size: 1.2rem; color: #1f2d3d;">STEM Tool</span>
+      </a>
+      <nav>
+        <ul class="flex" style="gap: 1.5rem; list-style: none; margin: 0; padding: 0;">
+          <li><a href="index.html">Home</a></li>
+          <li><a href="about.html">About</a></li>
+          <li><a href="login.html">Login/Register</a></li>
+          <li><a href="about.html#faq">FAQs</a></li>
+          <li><a href="about.html#contact">Contact</a></li>
+        </ul>
+      </nav>
+    </div>
+  </header>
 
+  <h2>Select Your Role</h2>
   <img src="https://cdn-icons-png.flaticon.com/512/1006/1006555.png" class="floating-icon" style="top:10%; left:5%;">
   <img src="https://cdn-icons-png.flaticon.com/512/1134/1134861.png" class="floating-icon" style="top:30%; right:10%; animation-delay: 2s;">
   <img src="https://cdn-icons-png.flaticon.com/512/609/609803.png" class="floating-icon" style="top:60%; left:20%; animation-delay: 4s;">
@@ -178,7 +186,7 @@
 
     function showRegister() {
       const formArea = document.getElementById('formArea');
-      formArea.innerHTML = `
+      fformArea.innerHTML = `
         <form id="registerForm" onsubmit="submitRegistration(event)">
           <h3>Register</h3>
           <label>Username</label><input type="text" name="username" required>
