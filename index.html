@@ -1,0 +1,184 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Interactive STEM Teaching Tool</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="logo.png">
+  <style>
+    html {
+      scroll-behavior: smooth;
+    }
+    body.loading {
+      overflow: hidden;
+    }
+    #preloader {
+      background: #e3f2fd;
+      position: fixed;
+      top: 0; left: 0; right: 0; bottom: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 1000;
+    }
+    .loader {
+      border: 6px solid #cce7ff;
+      border-top: 6px solid #2079b0;
+      border-radius: 50%;
+      width: 60px;
+      height: 60px;
+      animation: spin 1s linear infinite;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+    .hero {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 4rem 2rem;
+      background: linear-gradient(to right, #e3f2fd, #ffffff);
+    }
+    .hero img {
+      max-width: 45%;
+      animation: float 4s ease-in-out infinite;
+    }
+    @keyframes float {
+      0%, 100% { transform: translateY(0); }
+      50% { transform: translateY(-10px); }
+    }
+    .hero-text {
+      max-width: 50%;
+      animation: fadeInUp 1s ease forwards;
+      opacity: 0;
+    }
+    @keyframes fadeInUp {
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      from {
+        opacity: 0;
+        transform: translateY(40px);
+      }
+    }
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      background-color: #fff;
+      box-shadow: 0px 4px 12px rgba(0,0,0,0.1);
+      z-index: 1;
+      padding: 1rem;
+      border-radius: 8px;
+      opacity: 0;
+      transition: opacity 0.3s ease, transform 0.3s ease;
+      transform: translateY(10px);
+    }
+    .dropdown:hover .dropdown-content {
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .faq, .contact-section {
+      padding: 3rem 2rem;
+      background-color: #f8fbfd;
+    }
+    .faq h3, .contact-section h3 {
+      margin-bottom: 1rem;
+    }
+    .nav-logo {
+      height: 40px;
+    }
+  </style>
+</head>
+<body class="loading">
+  <div id="preloader">
+    <div class="loader"></div>
+  </div>
+
+  <nav class="navbar">
+    <div class="flex" style="justify-content: space-between; width: 100%;">
+      <img src="logo.png" alt="STEM Tool Logo" class="nav-logo">
+      <ul class="flex">
+        <li><a href="about.html">About</a></li>
+        <li class="dropdown">
+          <a href="#">Login/Register</a>
+          <div class="dropdown-content">
+            <a href="login.html?role=parent">Login as Parent</a><br>
+            <a href="login.html?role=teacher">Login as Teacher</a><br>
+            <a href="login.html?role=student">Login as Student</a>
+          </div>
+        </li>
+        <li><a href="#faq">FAQs</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <header class="hero">
+    <div class="hero-text">
+      <h1>Explore Science Through Simulated Experiments</h1>
+      <p>Virtual Labs, Real Learning. Empower your understanding of Physics, Biology, Chemistry, and Engineering from anywhere.</p>
+      <a href="about.html"><button>Learn More</button></a>
+    </div>
+    <img src="https://media.giphy.com/media/3o6ZsZKnWl2nMGbQTu/giphy.gif" alt="STEM Animation">
+  </header>
+
+  <section class="container section">
+    <h2 class="text-center">Our Key Features</h2>
+    <div class="instrument-panel">
+      <div class="card">
+        <h3>Virtual Physics Labs</h3>
+        <p>Simulate experiments in mechanics, optics, and electromagnetism with real-time data logging.</p>
+      </div>
+      <div class="card">
+        <h3>Interactive Biology Modules</h3>
+        <p>Conduct virtual dissections, explore cellular biology, and simulate bacterial growth.</p>
+      </div>
+      <div class="card">
+        <h3>Chemical Reaction Simulator</h3>
+        <p>Mix, react, and observe virtual chemicals in a safe, risk-free environment.</p>
+      </div>
+      <div class="card">
+        <h3>Engineering Simulations</h3>
+        <p>Design circuits, test bridge structures, and explore robotics virtually with optional AR integrations.</p>
+      </div>
+    </div>
+  </section>
+
+  <section class="faq" id="faq">
+    <h3 class="text-center">Frequently Asked Questions</h3>
+    <div class="container">
+      <h4>Who can use this platform?</h4>
+      <p>Students, teachers, and parents across various educational levels.</p>
+      <h4>Do I need any special software?</h4>
+      <p>No, it's all accessible through your browser.</p>
+      <h4>Are the experiments safe?</h4>
+      <p>Yes! All simulations are completely virtual and safe for any age group.</p>
+    </div>
+  </section>
+
+  <section class="contact-section" id="contact">
+    <h3 class="text-center">Contact Us</h3>
+    <div class="container text-center">
+      <p>Email: support@stemtool.org</p>
+      <p>Phone: +91 98765 43210</p>
+      <p>Address: #21, EduTech Street, Chennai, India</p>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2025 Interactive STEM Teaching Tool. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Preloader script
+    window.addEventListener('load', () => {
+      document.body.classList.remove('loading');
+      document.getElementById('preloader').style.display = 'none';
+    });
+  </script>
+</body>
+</html>
