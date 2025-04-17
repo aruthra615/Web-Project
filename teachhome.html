@@ -1,11 +1,11 @@
 <!DOCTYPE html>
-<html lang=\"en\">
+<html lang="en">
 <head>
-  <meta charset=\"UTF-8\" />
-  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Teacher Dashboard | STEM Teaching Tool</title>
-  <link rel=\"stylesheet\" href=\"style.css\" />
-  <link href=\"https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap\" rel=\"stylesheet\">
+  <link rel="stylesheet" href="style.css" />
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
   <style>
     body {
       font-family: 'Montserrat', sans-serif;
@@ -71,52 +71,108 @@
     .dropdown-menu a:hover {
       background: #f0f8ff;
     }
-
     .dashboard {
       padding: 2rem;
       animation: slideUp 1s ease;
     }
-
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(-10px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
-    @keyframes slideUp {
-      from { opacity: 0; transform: translateY(50px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-
     .dashboard img {
       width: 100%;
       border-radius: 10px;
       margin-bottom: 1rem;
     }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .tile-section {
+      margin-top: 2rem;
+    }
+    .section-title {
+      font-size: 1.4rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+    }
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 1.5rem;
+    }
+    .tile {
+      background: #ffffff;
+      border-radius: 12px;
+      padding: 1.2rem;
+      text-align: center;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.08);
+      transition: transform 0.3s, box-shadow 0.3s;
+      cursor: pointer;
+    }
+    .tile:hover {
+      transform: translateY(-5px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    }
+    .tile img {
+      width: 50px;
+      margin-bottom: 0.5rem;
+    }
   </style>
 </head>
 <body>
-  <header class=\"navbar\">
-    <a href=\"index.html\">
-      <img src=\"logo.png\" alt=\"STEM Tool Logo\" style=\"height: 36px; vertical-align: middle; margin-right: 10px;\" />
+  <header class="navbar">
+    <a href="index.html">
+      <img src="logo.png" alt="STEM Tool Logo" style="height: 36px; vertical-align: middle; margin-right: 10px;" />
       STEM Tool
     </a>
     <nav>
-      <a href=\"index.html\">Home</a>
-      <a href=\"about.html\">About</a>
-      <div class=\"profile-container\">
-        <img src=\"profile-icon.png\" alt=\"Profile\" class=\"profile-icon\" onclick=\"toggleDropdown()\">
-        <div class=\"dropdown-menu\" id=\"dropdownMenu\">
-          <a href=\"profilet.html\">Profile</a>
-          <a href=\"settings.html\">Settings</a>
-          <a href=\"login.html\">Logout</a>
+      <a href="index.html">Home</a>
+      <a href="about.html">About</a>
+      <div class="profile-container">
+        <img src="profile-icon.png" alt="Profile" class="profile-icon" onclick="toggleDropdown()">
+        <div class="dropdown-menu" id="dropdownMenu">
+          <a href="profilet.html">Profile</a>
+          <a href="settings.html">Settings</a>
+          <a href="login.html">Logout</a>
         </div>
       </div>
     </nav>
   </header>
 
-  <div class=\"dashboard\">
-    <img src=\"dashboard-welcome.gif\" alt=\"Welcome\">
-    <img src=\"teacher-dashboard.png\" alt=\"Teacher Dashboard\">
+  <div class="dashboard">
+    <img src="dashboard-welcome.gif" alt="Welcome">
+    <img src="teacher-dashboard.png" alt="Teacher Dashboard">
+
+    <div class="tile-section">
+      <div class="section-title">Interactive Tools & Management</div>
+      <div class="grid">
+        <a class="tile" href="soon.html"><img src="icons/lab.svg" alt="Virtual Lab">Manage Virtual Labs</a>
+        <a class="tile" href="soon.html"><img src="icons/quiz.svg" alt="Quiz Builder">Create Interactive Quizzes</a>
+        <a class="tile" href="soon.html"><img src="icons/assign.svg" alt="Assignments">Assign Experiments</a>
+        <a class="tile" href="soon.html"><img src="icons/eval.svg" alt="Evaluate">Evaluate Submissions</a>
+      </div>
+    </div>
+
+    <div class="tile-section">
+      <div class="section-title">Advanced Features</div>
+      <div class="grid">
+        <a class="tile" href="soon.html"><img src="icons/simulation.svg" alt="Simulations">Run Science Simulations</a>
+        <a class="tile" href="soon.html"><img src="icons/data.svg" alt="Data Analysis">Analyze Experiment Data</a>
+        <a class="tile" href="soon.html"><img src="icons/progress.svg" alt="Progress">Track Student Progress</a>
+        <a class="tile" href="soon.html"><img src="icons/live.svg" alt="Live Demo">Conduct Live Demonstrations</a>
+      </div>
+    </div>
+
+    <div class="tile-section">
+      <div class="section-title">Collaboration & Content</div>
+      <div class="grid">
+        <a class="tile" href="soon.html"><img src="icons/chat.svg" alt="Discussion">Facilitate Class Discussions</a>
+        <a class="tile" href="soon.html"><img src="icons/resource.svg" alt="Resources">Upload Teaching Resources</a>
+        <a class="tile" href="soon.html"><img src="icons/schedule.svg" alt="Schedule">Schedule Lab Sessions</a>
+        <a class="tile" href="soon.html"><img src="icons/announcement.svg" alt="Announcements">Post Announcements</a>
+      </div>
+    </div>
   </div>
 
   <script>
@@ -127,7 +183,7 @@
 
     window.onclick = function(event) {
       if (!event.target.matches('.profile-icon')) {
-        const dropdowns = document.getElementsByClassName(\"dropdown-menu\");
+        const dropdowns = document.getElementsByClassName("dropdown-menu");
         for (let i = 0; i < dropdowns.length; i++) {
           const openDropdown = dropdowns[i];
           if (openDropdown.style.display === 'block') {
