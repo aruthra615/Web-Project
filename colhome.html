@@ -1,10 +1,10 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>College Dashboard | STEM Teaching Tool</title>
-  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   <style>
     body {
@@ -100,6 +100,7 @@
       text-align: center;
       transition: transform 0.3s, background 0.3s;
       backdrop-filter: blur(10px);
+      color: #000;
     }
 
     .tile:hover {
@@ -130,6 +131,7 @@
       font-size: 0.9rem;
       backdrop-filter: blur(5px);
       animation: bounceIn 1s;
+      color: #000;
     }
   </style>
 </head>
@@ -154,113 +156,145 @@
   </nav>
 </header>
 
-div class="dashboard">
-    <div class="info-box">
-      Welcome to your college dashboard! Access lab simulations and tools tailored for B.Tech CSE students.
-    </div>
+<div class="dashboard">
+  <h2 class="section-title animate__animated animate__fadeIn">Recently Visited</h2>
+  <div class="grid" id="recent-visit">
+    <!-- Dynamically updated -->
+  </div>
 
-    <div class="section-title">Recently Visited</div>
-    <div class="grid">
-      <div class="tile">
-        <a href="lab-python.html">
-          <img src="https://cdn-icons-png.flaticon.com/512/5968/5968350.png" alt="Python Lab">
-          Python Programming
-        </a>
-      </div>
-      <div class="tile">
-        <a href="lab-compilers.html">
-          <img src="https://cdn-icons-png.flaticon.com/512/2798/2798007.png" alt="Compilers">
-          Compiler Visualizer
-        </a>
-      </div>
+  <h2 class="section-title animate__animated animate__fadeIn">Lab Modules</h2>
+  <div class="grid" id="lab-modules">
+    <div class="tile animate__animated animate__zoomIn">
+      <a href="lab-c.html" onclick="setRecent('lab-c.html', 'C Programming', 'https://cdn-icons-png.flaticon.com/512/6132/6132222.png')">
+        <img src="https://cdn-icons-png.flaticon.com/512/6132/6132222.png" alt="C Programming"/>
+        C Programming
+      </a>
     </div>
-
-    <div class="section-title">Lab Modules</div>
-    <div class="grid">
-      <div class="tile">
-        <a href="lab-c.html">
-          <img src="https://cdn-icons-png.flaticon.com/512/6132/6132222.png" alt="C Lab">
-          C Programming
-        </a>
-      </div>
-      <div class="tile">
-        <a href="lab-cpp.html">
-          <img src="https://cdn-icons-png.flaticon.com/512/6132/6132221.png" alt="C++ Lab">
-          C++ Programming
-        </a>
-      </div>
-      <div class="tile">
-        <a href="lab-html.html">
-          <img src="https://cdn-icons-png.flaticon.com/512/732/732212.png" alt="HTML Lab">
-          HTML & CSS
-        </a>
-      </div>
-      <div class="tile">
-        <a href="lab-js.html">
-          <img src="https://cdn-icons-png.flaticon.com/512/5968/5968292.png" alt="JS Lab">
-          JavaScript Lab
-        </a>
-      </div>
-      <div class="tile">
-        <a href="lab-java.html">
-          <img src="https://cdn-icons-png.flaticon.com/512/226/226777.png" alt="Java Lab">
-          Java Programming
-        </a>
-      </div>
+    <div class="tile animate__animated animate__zoomIn">
+      <a href="lab-cpp.html" onclick="setRecent('lab-cpp.html', 'C++ Programming', 'https://cdn-icons-png.flaticon.com/512/6132/6132221.png')">
+        <img src="https://cdn-icons-png.flaticon.com/512/6132/6132221.png" alt="C++ Programming"/>
+        C++ Programming
+      </a>
     </div>
-
-    <div class="section-title">Educational Games</div>
-    <div class="grid">
-      <div class="tile">
-        <a href="game-codingquiz.html">
-          <img src="https://cdn-icons-png.flaticon.com/512/5968/5968292.png" alt="Coding Quiz">
-          Debug the Code
-        </a>
-      </div>
-      <div class="tile">
-        <a href="game-algopuzzle.html">
-          <img src="https://cdn-icons-png.flaticon.com/512/843/843315.png" alt="Algo Game">
-          Algorithm Puzzle
-        </a>
-      </div>
-      <div class="tile">
-        <a href="game-dbchallenge.html">
-          <img src="https://cdn-icons-png.flaticon.com/512/3233/3233472.png" alt="DB Quiz">
-          Database Challenge
-        </a>
-      </div>
+    <div class="tile animate__animated animate__zoomIn">
+      <a href="lab-java.html" onclick="setRecent('lab-java.html', 'Java Programming', 'https://cdn-icons-png.flaticon.com/512/226/226777.png')">
+        <img src="https://cdn-icons-png.flaticon.com/512/226/226777.png" alt="Java Programming"/>
+        Java Programming
+      </a>
     </div>
-
-    <div class="badge-grid">
-      <div class="badge">Data Wizard</div>
-      <div class="badge">Network Ninja</div>
-      <div class="badge">Compiler Guru</div>
-      <div class="badge">Debugging Pro</div>
-      <div class="badge">Algorithm Ace</div>
-      <div class="badge">Frontend Firecracker</div>
+    <div class="tile animate__animated animate__zoomIn">
+      <a href="lab-python.html" onclick="setRecent('lab-python.html', 'Python Programming', 'https://cdn-icons-png.flaticon.com/512/5968/5968350.png')">
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968350.png" alt="Python Programming"/>
+        Python Programming
+      </a>
+    </div>
+    <div class="tile animate__animated animate__zoomIn">
+      <a href="lab-html.html" onclick="setRecent('lab-html.html', 'HTML & CSS', 'https://cdn-icons-png.flaticon.com/512/732/732212.png')">
+        <img src="https://cdn-icons-png.flaticon.com/512/732/732212.png" alt="HTML & CSS"/>
+        HTML & CSS
+      </a>
+    </div>
+    <div class="tile animate__animated animate__zoomIn">
+      <a href="lab-js.html" onclick="setRecent('lab-js.html', 'JavaScript Lab', 'https://cdn-icons-png.flaticon.com/512/5968/5968292.png')">
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968292.png" alt="JavaScript Lab"/>
+        JavaScript Lab
+      </a>
+    </div>
+    <div class="tile animate__animated animate__zoomIn">
+      <a href="lab-compilers.html" onclick="setRecent('lab-compilers.html', 'Compiler Visualizer', 'https://cdn-icons-png.flaticon.com/512/2798/2798007.png')">
+        <img src="https://cdn-icons-png.flaticon.com/512/2798/2798007.png" alt="Compiler Visualizer"/>
+        Compiler Visualizer
+      </a>
     </div>
   </div>
-</body>
-</html>
 
-  <script>
-  // existing JS unchanged
-  document.addEventListener('DOMContentLoaded', () => {
-    const recentContainer = document.getElementById('recent-visit');
-    const recentPage = JSON.parse(localStorage.getItem('lastVisited'));
+  <h2 class="section-title animate__animated animate__fadeIn">Educational Games</h2>
+  <div class="grid" id="educational-games">
+    <div class="tile animate__animated animate__zoomIn">
+      <a href="game-codingquiz.html" onclick="setRecent('game-codingquiz.html', 'Debug the Code', 'https://cdn-icons-png.flaticon.com/512/5968/5968292.png')">
+        <img src="https://cdn-icons-png.flaticon.com/512/5968/5968292.png" alt="Debug the Code"/>
+        Debug the Code
+      </a>
+    </div>
+    <div class="tile animate__animated animate__zoomIn">
+      <a href="game-algopuzzle.html" onclick="setRecent('game-algopuzzle.html', 'Algorithm Puzzle', 'https://cdn-icons-png.flaticon.com/512/843/843315.png')">
+        <img src="https://cdn-icons-png.flaticon.com/512/843/843315.png" alt="Algorithm Puzzle"/>
+        Algorithm Puzzle
+      </a>
+    </div>
+    <div class="tile animate__animated animate__zoomIn">
+      <a href="game-dbchallenge.html" onclick="setRecent('game-dbchallenge.html', 'Database Challenge', 'https://cdn-icons-png.flaticon.com/512/3233/3233472.png')">
+        <img src="https://cdn-icons-png.flaticon.com/512/3233/3233472.png" alt="Database Challenge"/>
+        Database Challenge
+      </a>
+    </div>
+  </div>
 
-    if (recentPage) {
-      recentContainer.innerHTML = `
+  <div class="badge-grid">
+    <div class="badge">Data Wizard</div>
+    <div class="badge">Network Ninja</div>
+    <div class="badge">Compiler Guru</div>
+    <div class="badge">Debugging Pro</div>
+    <div class="badge">Algorithm Ace</div>
+    <div class="badge">Frontend Firecracker</div>
+  </div>
+</div>
+
+<script>
+  const labModules = [
+    { url: "lab-c.html", name: "C Programming", icon: "https://cdn-icons-png.flaticon.com/512/6132/6132222.png" },
+    { url: "lab-cpp.html", name: "C++ Programming", icon: "https://cdn-icons-png.flaticon.com/512/6132/6132221.png" },
+    { url: "lab-java.html", name: "Java Programming", icon: "https://cdn-icons-png.flaticon.com/512/226/226777.png" },
+    { url: "lab-python.html", name: "Python Programming", icon: "https://cdn-icons-png.flaticon.com/512/5968/5968350.png" },
+    { url: "lab-html.html", name: "HTML & CSS", icon: "https://cdn-icons-png.flaticon.com/512/732/732212.png" },
+    { url: "lab-js.html", name: "JavaScript Lab", icon: "https://cdn-icons-png.flaticon.com/512/5968/5968292.png" },
+    { url: "lab-compilers.html", name: "Compiler Visualizer", icon: "https://cdn-icons-png.flaticon.com/512/2798/2798007.png" }
+  ];
+
+  const games = [
+    { url: "game-codingquiz.html", name: "Debug the Code", icon: "https://cdn-icons-png.flaticon.com/512/5968/5968292.png" },
+    { url: "game-algopuzzle.html", name: "Algorithm Puzzle", icon: "https://cdn-icons-png.flaticon.com/512/843/843315.png" },
+    { url: "game-dbchallenge.html", name: "Database Challenge", icon: "https://cdn-icons-png.flaticon.com/512/3233/3233472.png" }
+  ];
+
+  function populateGrid(id, items) {
+    const container = document.getElementById(id);
+    container.innerHTML = items.map(item => `
+      <div class="tile animate__animated animate__zoomIn">
+        <a href="${item.url}" onclick="setRecent('${item.url}', '${item.name}', '${item.icon}')">
+          <img src="${item.icon}" alt="${item.name}"/>
+          ${item.name}
+        </a>
+      </div>
+    `).join('');
+  }
+
+  function setRecent(url, name, icon) {
+    const page = { url, name, icon };
+    localStorage.setItem("lastVisited", JSON.stringify(page));
+  }
+
+  function loadRecent() {
+    const recent = JSON.parse(localStorage.getItem("lastVisited"));
+    const container = document.getElementById("recent-visit");
+    if (recent) {
+      container.innerHTML = `
         <div class="tile animate__animated animate__fadeInUp">
-          <a href="${recentPage.url}">
-            <img src="${recentPage.icon}" alt="${recentPage.name}">
-            ${recentPage.name}
+          <a href="${recent.url}">
+            <img src="${recent.icon}" alt="${recent.name}"/>
+            ${recent.name}
           </a>
         </div>
       `;
     } else {
-      recentContainer.innerHTML = '<p>No recent pages visited.</p>';
+      container.innerHTML = "<p>No recent pages visited.</p>";
     }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    populateGrid("lab-modules", labModules);
+    populateGrid("educational-games", games);
+    loadRecent();
   });
 </script>
 
