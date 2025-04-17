@@ -25,16 +25,21 @@
     }
 
     .navbar {
-      background: #ffffff;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      padding: 1.2rem 2rem;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      position: sticky;
-      top: 0;
-      z-index: 1000;
-    }
+  background: #ffffff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+  padding: 0.8rem 1.5rem; 
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+}
+
+    .nav-logo {
+  height: 40px; 
+  width: auto;
+}
 
     .navbar ul {
       list-style: none;
@@ -52,6 +57,12 @@
     .navbar li a:hover {
       color: #0077c2;
     }
+
+    .navbar a,
+.navbar ul {
+  display: flex;
+  align-items: center;
+}
 
     section {
       padding: 4rem 2rem;
