@@ -1,192 +1,237 @@
 <!DOCTYPE html>
-<html lang=\"en\">
+<html lang="en">
 <head>
-  <meta charset=\"UTF-8\">
-  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\">
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
   <title>Student Dashboard | STEM Teaching Tool</title>
-  <link href=\"https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap\" rel=\"stylesheet\">
+  <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css"/>
   <style>
     body {
       font-family: 'Montserrat', sans-serif;
-      background: #f0f8ff;
+      background: linear-gradient(to right, #11998e, #38ef7d);
+      color: #fff;
       margin: 0;
       padding: 0;
+      overflow-x: hidden;
     }
 
     .navbar {
       position: sticky;
       top: 0;
       z-index: 1000;
-      background: #fff;
-      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+      background: rgba(255, 255, 255, 0.9);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
       align-items: center;
+      backdrop-filter: blur(10px);
     }
 
-    .navbar a {
+    .navbar nav a {
       text-decoration: none;
       color: #1f2d3d;
-      font-weight: normal;
       margin-left: 20px;
+      transition: color 0.3s;
+    }
+
+    .navbar nav a:hover {
+      color: #11998e;
+    }
+
+    .profile-icon {
+      position: relative;
+      cursor: pointer;
+      display: inline-block;
+    }
+
+    .dropdown-content {
+      display: none;
+      position: absolute;
+      right: 0;
+      background-color: #ffffff;
+      min-width: 140px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.1);
+      z-index: 1;
+      border-radius: 8px;
+      overflow: hidden;
+    }
+
+    .dropdown-content a {
+      padding: 10px 14px;
+      display: block;
+      text-decoration: none;
+      color: #333;
+      transition: background 0.3s;
+    }
+
+    .dropdown-content a:hover {
+      background-color: #f3f3f3;
+    }
+
+    .profile-icon:hover .dropdown-content {
+      display: block;
     }
 
     .dashboard {
-      padding: 2rem;
+      padding: 3rem;
       max-width: 1200px;
       margin: 0 auto;
     }
 
-    .info-box {
-      background: #e6f2ff;
-      padding: 1.5rem;
-      border-radius: 10px;
-      text-align: center;
-      font-size: 1.1rem;
-      margin-bottom: 2rem;
-      box-shadow: 0 3px 6px rgba(0,0,0,0.05);
-    }
-
     .section-title {
-      margin: 2rem 0 1rem;
-      font-weight: 600;
-      font-size: 1.4rem;
-      color: #333;
+      font-size: 1.8rem;
+      margin-bottom: 1.5rem;
+      animation: fadeInDown 1s;
     }
 
     .grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      gap: 1.5rem;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 2rem;
     }
 
     .tile {
-      background: white;
-      border-radius: 10px;
-      box-shadow: 0 4px 10px rgba(0,0,0,0.07);
-      padding: 1rem;
+      background: rgba(255, 255, 255, 0.2);
+      border-radius: 15px;
+      box-shadow: 0 6px 15px rgba(0,0,0,0.15);
+      padding: 1.5rem;
       text-align: center;
-      transition: transform 0.3s;
+      transition: transform 0.3s, background 0.3s;
+      backdrop-filter: blur(10px);
+      color: #000;
     }
 
     .tile:hover {
-      transform: translateY(-8px);
+      transform: translateY(-12px);
+      background: rgba(255, 255, 255, 0.3);
     }
 
     .tile img {
-      width: 60px;
-      height: 60px;
-      object-fit: contain;
-      margin-bottom: 0.5rem;
+      width: 70px;
+      height: 70px;
+      margin-bottom: 1rem;
+      animation: zoomIn 1s;
     }
 
     .badge-grid {
       display: flex;
       flex-wrap: wrap;
       justify-content: center;
-      gap: 0.8rem;
-      margin-top: 1.5rem;
+      gap: 1rem;
+      margin-top: 2rem;
     }
 
     .badge {
-      background: #fff;
-      padding: 0.5rem 1rem;
-      border-radius: 20px;
-      box-shadow: 0 2px 5px rgba(0,0,0,0.07);
-      font-size: 0.85rem;
-    }
-
-    @media(max-width: 600px) {
-      .navbar a {
-        margin-left: 10px;
-        font-size: 0.9rem;
-      }
+      background: rgba(255,255,255,0.3);
+      padding: 0.6rem 1.2rem;
+      border-radius: 25px;
+      box-shadow: 0 3px 8px rgba(0,0,0,0.1);
+      font-size: 0.9rem;
+      backdrop-filter: blur(5px);
+      animation: bounceIn 1s;
+      color: #000;
     }
   </style>
 </head>
 <body>
-  <header class=\"navbar\">
-    <a href=\"index.html\">
-      <img src=\"logo.png\" alt=\"STEM Tool Logo\" style=\"height: 32px; vertical-align: middle;\">
-      STEM Tool
-    </a>
-    <nav>
-      <a href=\"index.html\">Home</a>
-      <a href=\"about.html\">About</a>
-      <a href=\"login.html\">Logout</a>
-    </nav>
-  </header>
 
-  <div class=\"dashboard\">
-    <div class=\"info-box\">
-      Welcome to your dashboard! Here you can access your labs and educational games.
-    </div>
-
-    <div class=\"section-title\">Recently Visited</div>
-    <div class=\"grid\">
-      <div class=\"tile\">
-        <img src=\"$1\" alt=\"$2\">
-        <div>$3</div>
+<header class="navbar">
+  <a href="index.html" style="color:#11998e; font-weight:bold;">
+    <img src="logo.png" alt="STEM Tool Logo" style="height: 32px; vertical-align: middle;">
+    STEM Tool
+  </a>
+  <nav>
+    <a href="index.html">Home</a>
+    <a href="about.html">About</a>
+    <div class="profile-icon">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135715.png" alt="Profile Icon" style="height: 32px;">
+      <div class="dropdown-content">
+        <a href="profile.html">Profile</a>
+        <a href="settings.html">Settings</a>
+        <a href="login.html">Logout</a>
       </div>
     </div>
+  </nav>
+</header>
 
-    <div class=\"section-title\">Subject Labs</div>
-    <div class=\"grid\">
-      <div class=\"tile\">
-        <a href=\"lab-chemistry.html\">
-          <img src=\"https://cdn-icons-png.flaticon.com/512/2913/2913461.png\" alt=\"Chemistry\">
-          Chemistry
-        </a>
-      </div>
-      <div class=\"tile\">
-        <a href=\"lab-physics.html\">
-          <img src=\"https://cdn-icons-png.flaticon.com/512/2770/2770642.png\" alt=\"Physics\">
-          Physics
-        </a>
-      </div>
-      <div class=\"tile\">
-        <a href=\"lab-biology.html\">
-          <img src=\"https://cdn-icons-png.flaticon.com/512/4081/4081309.png\" alt=\"Biology\">
-          Biology
-        </a>
-      </div>
-      <div class=\"tile\">
-        <a href=\"lab-maths.html\">
-          <img src=\"https://cdn-icons-png.flaticon.com/512/2554/2554975.png\" alt=\"Maths\">
-          Mathematics
-        </a>
-      </div>
-    </div>
-
-    <div class=\"section-title\">Educational Games</div>
-    <div class=\"grid\">
-      <div class=\"tile\">
-        <a href=\"game-periodic.html\">
-          <img src=\"/mnt/data/A_2D_digital_illustration_displays_an_educational_.png\" alt=\"Periodic Game\">
-          Periodic Table Puzzle
-        </a>
-      </div>
-      <div class=\"tile\">
-        <a href=\"game-magnet.html\">
-          <img src=\"https://cdn-icons-png.flaticon.com/512/1014/1014753.png\" alt=\"Magnet Game\">
-          Magnet Maze Challenge
-        </a>
-      </div>
-      <div class=\"tile\">
-        <a href=\"game-cell.html\">
-          <img src=\"https://cdn-icons-png.flaticon.com/512/726/726003.png\" alt=\"Cell Game\">
-          Cell Structure Quest
-        </a>
-      </div>
-    </div>
-
-    <div class=\"badge-grid\">
-      <div class=\"badge\">Periodic Puzzle Master</div>
-      <div class=\"badge\">STEM Star</div>
-    </div>
+<div class="dashboard">
+  <h2 class="section-title animate__animated animate__fadeIn">Recently Visited</h2>
+  <div class="grid" id="recent-visit">
+    <!-- Dynamic -->
   </div>
+
+  <h2 class="section-title animate__animated animate__fadeIn">Subject Labs</h2>
+  <div class="grid" id="lab-modules"></div>
+
+  <h2 class="section-title animate__animated animate__fadeIn">Educational Games</h2>
+  <div class="grid" id="educational-games"></div>
+
+  <div class="badge-grid">
+    <div class="badge">Periodic Puzzle Master</div>
+    <div class="badge">STEM Star</div>
+    <div class="badge">Debugging Champ</div>
+    <div class="badge">Math Marvel</div>
+    <div class="badge">Science Sleuth</div>
+    <div class="badge">Logical Legend</div>
+  </div>
+</div>
+
+<script>
+  const labModules = [
+    { url: "lab-chemistry.html", name: "Chemistry", icon: "https://cdn-icons-png.flaticon.com/512/2913/2913461.png" },
+    { url: "lab-physics.html", name: "Physics", icon: "https://cdn-icons-png.flaticon.com/512/2770/2770642.png" },
+    { url: "lab-biology.html", name: "Biology", icon: "https://cdn-icons-png.flaticon.com/512/4081/4081309.png" },
+    { url: "lab-maths.html", name: "Mathematics", icon: "https://cdn-icons-png.flaticon.com/512/2554/2554975.png" }
+  ];
+
+  const games = [
+    { url: "game-periodic.html", name: "Periodic Table Puzzle", icon: "https://cdn-icons-png.flaticon.com/512/616/616487.png" },
+    { url: "game-magnet.html", name: "Magnet Maze Challenge", icon: "https://cdn-icons-png.flaticon.com/512/1014/1014753.png" },
+    { url: "game-cell.html", name: "Cell Structure Quest", icon: "https://cdn-icons-png.flaticon.com/512/726/726003.png" }
+  ];
+
+  function populateGrid(id, items) {
+    const container = document.getElementById(id);
+    container.innerHTML = items.map(item => `
+      <div class="tile animate__animated animate__zoomIn">
+        <a href="${item.url}" onclick="setRecent('${item.url}', '${item.name}', '${item.icon}')">
+          <img src="${item.icon}" alt="${item.name}"/>
+          ${item.name}
+        </a>
+      </div>
+    `).join('');
+  }
+
+  function setRecent(url, name, icon) {
+    const page = { url, name, icon };
+    localStorage.setItem("lastVisited", JSON.stringify(page));
+  }
+
+  function loadRecent() {
+    const recent = JSON.parse(localStorage.getItem("lastVisited"));
+    const container = document.getElementById("recent-visit");
+    if (recent) {
+      container.innerHTML = `
+        <div class="tile animate__animated animate__fadeInUp">
+          <a href="${recent.url}">
+            <img src="${recent.icon}" alt="${recent.name}"/>
+            ${recent.name}
+          </a>
+        </div>
+      `;
+    } else {
+      container.innerHTML = "<p>No recent pages visited.</p>";
+    }
+  }
+
+  document.addEventListener("DOMContentLoaded", () => {
+    populateGrid("lab-modules", labModules);
+    populateGrid("educational-games", games);
+    loadRecent();
+  });
+</script>
+
 </body>
 </html>
-
-
