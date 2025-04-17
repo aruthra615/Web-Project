@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <title>HTML + CSS + JS Live Compiler</title>
+  <title>HTML + CSS Live Compiler</title>
   <style>
     body {
       background: #f3faff;
@@ -80,8 +80,19 @@
   </style>
 </head>
 <body>
+      <header class="game-header">
+  <div class="left" style="display: flex; align-items: center; gap: 1rem;">
+    <img src="logo.png" alt="STEM Tool Logo" class="nav-logo" style="height: 40px;">
+    <h2 style="margin: 0; color: #0072ff;">Lab</h2>
+  </div>
+  <div class="right" style="display: flex; align-items: center; gap: 1.5rem;">
+    <a href="colhome.html" class="dashboard-link">Dashboard</a>
+    <a href="login.html" class="logout-btn">Logout</a>
+    <img src="icon.svg" alt="Profile" class="profile-icon" style="height: 32px;">
+  </div>
+</header>
   <div class="container">
-    <h1>HTML + CSS + JS Live Compiler</h1>
+    <h1>HTML + CSS Live Compiler</h1>
     <div class="editor-section">
       <div class="editor">
         <label for="htmlCode">HTML</label>
@@ -91,10 +102,7 @@
         <label for="cssCode">CSS</label>
         <textarea id="cssCode">h1 { color: teal; text-align: center; }</textarea>
       </div>
-      <div class="editor">
-        <label for="jsCode">JavaScript</label>
-        <textarea id="jsCode">console.log("JavaScript is working!");</textarea>
-      </div>
+      
     </div>
     <button onclick="runCode()">Run Code</button>
     <iframe id="outputFrame"></iframe>
