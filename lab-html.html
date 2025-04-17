@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>HTML + CSS Live Compiler</title>
+  <style>
+    body {
+      background: #f0faff;
+      font-family: 'Segoe UI', sans-serif;
+      margin: 0;
+      padding: 2rem;
+    }
+
+    .container {
+      max-width: 1000px;
+      margin: auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 6px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    h1 {
+      text-align: center;
+      color: #0077cc;
+      margin-bottom: 1.5rem;
+    }
+
+    .editor-area {
+      display: flex;
+      gap: 1rem;
+      flex-wrap: wrap;
+    }
+
+    textarea {
+      width: 100%;
+      height: 200px;
+      padding: 1rem;
+      font-family: 'Courier New', monospace;
+      font-size: 14px;
+      border: 1px solid #ccc;
+      border-radius: 8px;
+      resize: vertical;
+      background-color: #fdfdfd;
+    }
+
+    .half {
+      flex: 1 1 48%;
+    }
+
+    button {
+      display: block;
+      margin: 1rem auto 0;
+      padding: 0.75rem 2rem;
+      font-size: 16px;
+      background-color: #0077cc;
+      color: white;
+      border: none;
+      border-radius: 6px;
+      cursor: pointer;
+    }
+
+    button:hover {
+      background-color: #005fa3;
+    }
+
+    iframe {
+      width: 100%;
+      height: 300px;
+      margin-top: 1.5rem;
+      border: 1px solid #ddd;
+      border-radius: 8px;
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <h1>HTML + CSS Live Compiler</h1>
+    <div class="editor-area">
+      <div class="half">
+        <label><strong>HTML Code</strong></label>
+        <textarea id="htmlCode">&lt;h1&gt;Hello World&lt;/h1&gt;</textarea>
+      </div>
+      <div class="half">
+        <label><strong>CSS Code</strong></label>
+        <textarea id="cssCode">h1 { color: crimson; text-align: center; }</textarea>
+      </div>
+    </div>
+    <button onclick="runCode()">Render Output</button>
+    <iframe id="previewFrame"></iframe>
+  </div>
+
+  <script>
+    function runCode() {
+      const html = document.getElementById("htmlCode").value;
+      const css = document.getElementById("cssCode").value;
+      const iframe = document.getElementById("previewFrame");
+
+      const fullCode = `
+        <html>
+          <head>
+            <style>${css}</style>
+          </head>
+          <body>${html}</body>
+        </html>
+      `;
+
+      iframe.srcdoc = fullCode;
+    }
+
+    // Auto-render once on load
+    window.onload = runCode;
+  </script>
+</body>
+</html>
