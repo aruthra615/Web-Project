@@ -162,9 +162,9 @@
         <form id="loginForm" onsubmit="handleLogin(event, role)">
           <h3>Login as ${role.charAt(0).toUpperCase() + role.slice(1)}</h3>
           <label>Username</label>
-          <input type="text" required>
+          <input type="text" name="username" required>
           <label>Password</label>
-          <input type="password" required>
+          <input type="password" name="password" required>
           <button class="btn" type="submit">Login</button>
         </form>
       `;
@@ -260,8 +260,8 @@
       function handleRegister(event) {
       event.preventDefault();
       const form = event.target;
-      const username = form.querySelector('input[type="text"]').value;
-      const password = form.querySelector('input[type="password"]').value;
+      const username = form.querySelector('input[name="username"]').value;
+      const password = form.querySelector('input[name="password"]').value;
       const role = form.querySelector('select#userType').value;
 
       if (!username || !password || !role) {
@@ -284,8 +284,8 @@
 
     function handleLogin(event, role) {
       event.preventDefault();
-      const username = event.target.querySelector('input[type="text"]').value;
-      const password = event.target.querySelector('input[type="password"]').value;
+      const username = event.target.querySelector('input[name="username"]').value;
+      const password = event.target.querySelector('input[name="password"]').value;
       const users = JSON.parse(localStorage.getItem('users')) || [];
       const user = users.find(u => u.username === username && u.password === password);
 
