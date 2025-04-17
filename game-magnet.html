@@ -1,17 +1,18 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Cell Structure Quest</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Magnet Maze Challenge</title>
   <style>
     body {
       margin: 0;
       font-family: 'Montserrat', sans-serif;
-      background: linear-gradient(to right, #f6d365, #fda085);
+      background: linear-gradient(to right, #ffe259, #ffa751);
       display: flex;
       flex-direction: column;
       min-height: 100vh;
+      align-items: center;
     }
 
     .game-header {
@@ -19,7 +20,7 @@
       display: flex;
       justify-content: space-between;
       align-items: center;
-      background: #d35400;
+      background: #ff9248;
       color: white;
       padding: 1rem 2rem;
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
@@ -53,7 +54,7 @@
     }
 
     .logout-btn {
-      background: #e74c3c;
+      background: #ff4d4d;
       padding: 0.5rem 1rem;
       border-radius: 6px;
       text-decoration: none;
@@ -67,72 +68,52 @@
     }
 
     h1 {
-      text-align: center;
-      color: #fff;
-      margin: 1.5rem 0 1rem;
+      color: white;
+      margin: 2rem 0 1rem;
     }
 
-    .game-container {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 2rem;
-      justify-content: center;
-      align-items: flex-start;
-      padding: 0 2rem 2rem;
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(6, 60px);
+      grid-template-rows: repeat(6, 60px);
+      gap: 5px;
     }
 
-    .cell-diagram {
-      background: white;
-      border-radius: 12px;
-      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
-      padding: 1rem;
-      width: 300px;
-      height: 400px;
-      background-image: url('https://cdn.pixabay.com/photo/2013/07/12/18/11/cell-153648_1280.png');
-      background-size: cover;
-      position: relative;
-    }
-
-    .drop-zone {
-      position: absolute;
+    .cell {
       width: 60px;
       height: 60px;
-      border: 2px dashed #aaa;
+      background-color: #fff;
       border-radius: 10px;
-    }
-
-    .zone1 { top: 30%; left: 20%; }
-    .zone2 { top: 60%; left: 40%; }
-    .zone3 { top: 45%; left: 70%; }
-
-    .organelle-bank {
       display: flex;
-      flex-direction: column;
-      gap: 1rem;
       align-items: center;
-    }
-
-    .organelle {
-      width: 120px;
-      padding: 0.5rem;
-      background: white;
-      border-radius: 10px;
-      text-align: center;
-      cursor: grab;
-      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      justify-content: center;
       font-weight: bold;
+      font-size: 1.1rem;
     }
 
-    .completed {
-      background-color: #4caf50;
-      color: white;
-    }
+    .ball { background-color: #3f51b5; color: white; }
+    .goal { background-color: #4caf50; color: white; }
+    .wall { background-color: #000; }
 
-    #result {
-      text-align: center;
+    .controls {
       margin-top: 1rem;
+    }
+
+    .controls button {
+      padding: 0.6rem 1.2rem;
+      margin: 0.3rem;
+      font-size: 1rem;
       font-weight: bold;
-      color: #fff;
+      background: white;
+      color: #ffa751;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .controls button:hover {
+      background-color: #ffe259;
+      color: #333;
     }
   </style>
 </head>
@@ -151,51 +132,76 @@
     </div>
   </header>
 
-  <h1>🧬 Cell Structure Quest</h1>
+  <h1>🧲 Magnet Maze Challenge</h1>
+  <div class="grid" id="grid"></div>
 
-  <div class="game-container">
-    <div class="cell-diagram">
-      <div class="drop-zone zone1" data-zone="Nucleus"></div>
-      <div class="drop-zone zone2" data-zone="Mitochondria"></div>
-      <div class="drop-zone zone3" data-zone="Golgi Body"></div>
-    </div>
-    <div class="organelle-bank">
-      <div class="organelle" draggable="true" data-name="Nucleus">Nucleus</div>
-      <div class="organelle" draggable="true" data-name="Mitochondria">Mitochondria</div>
-      <div class="organelle" draggable="true" data-name="Golgi Body">Golgi Body</div>
-    </div>
+  <div class="controls">
+    <button onclick="move('up')">⬆️ N Pole</button>
+    <button onclick="move('left')">⬅️</button>
+    <button onclick="move('right')">➡️</button>
+    <button onclick="move('down')">⬇️ S Pole</button>
+    <button onclick="resetGame()">🔄 Reset</button>
   </div>
 
-  <div id="result"></div>
-
   <script>
-    const organelles = document.querySelectorAll('.organelle');
-    const zones = document.querySelectorAll('.drop-zone');
-    let placed = 0;
+    const gridEl = document.getElementById('grid');
+    const size = 6;
+    let ball = { x: 0, y: 0 };
+    const goal = { x: 5, y: 5 };
+    const walls = [
+      { x: 1, y: 1 }, { x: 1, y: 2 }, { x: 1, y: 3 },
+      { x: 3, y: 1 }, { x: 3, y: 2 }, { x: 3, y: 3 },
+      { x: 4, y: 4 }
+    ];
 
-    organelles.forEach(item => {
-      item.addEventListener('dragstart', e => {
-        e.dataTransfer.setData('text/plain', item.dataset.name);
-      });
-    });
-
-    zones.forEach(zone => {
-      zone.addEventListener('dragover', e => e.preventDefault());
-      zone.addEventListener('drop', e => {
-        e.preventDefault();
-        const draggedName = e.dataTransfer.getData('text');
-        if (draggedName === zone.dataset.zone) {
-          zone.textContent = draggedName;
-          zone.classList.add('completed');
-          placed++;
-          if (placed === 3) {
-            document.getElementById('result').textContent = '🎉 Great Job! All organelles placed correctly!';
+    function drawGrid() {
+      gridEl.innerHTML = '';
+      for (let y = 0; y < size; y++) {
+        for (let x = 0; x < size; x++) {
+          const cell = document.createElement('div');
+          cell.classList.add('cell');
+          if (ball.x === x && ball.y === y) {
+            cell.classList.add('ball');
+            cell.textContent = '⚫';
+          } else if (goal.x === x && goal.y === y) {
+            cell.classList.add('goal');
+            cell.textContent = '🏁';
+          } else if (walls.some(w => w.x === x && w.y === y)) {
+            cell.classList.add('wall');
           }
-        } else {
-          alert('❌ That doesn\'t belong there! Try again.');
+          gridEl.appendChild(cell);
         }
-      });
-    });
+      }
+    }
+
+    function move(direction) {
+      const { x, y } = ball;
+      let newX = x;
+      let newY = y;
+      if (direction === 'up') newY = y > 0 ? y - 1 : y;
+      if (direction === 'down') newY = y < size - 1 ? y + 1 : y;
+      if (direction === 'left') newX = x > 0 ? x - 1 : x;
+      if (direction === 'right') newX = x < size - 1 ? x + 1 : x;
+
+      if (!walls.some(w => w.x === newX && w.y === newY)) {
+        ball = { x: newX, y: newY };
+        drawGrid();
+        checkGoal();
+      }
+    }
+
+    function checkGoal() {
+      if (ball.x === goal.x && ball.y === goal.y) {
+        setTimeout(() => alert('🎉 Goal reached!'), 100);
+      }
+    }
+
+    function resetGame() {
+      ball = { x: 0, y: 0 };
+      drawGrid();
+    }
+
+    drawGrid();
   </script>
 </body>
 </html>
