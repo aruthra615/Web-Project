@@ -1,0 +1,267 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About Us | STEM Teaching Tool</title>
+  <link rel="stylesheet" href="style.css">
+  <link rel="icon" href="logo.png">
+  <style>
+    body {
+      animation: fadeIn 1s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+    section {
+      padding: 4rem 2rem;
+    }
+    .section-title {
+      text-align: center;
+      font-size: 2rem;
+      margin-bottom: 2rem;
+    }
+    .card {
+      transition: transform 0.3s ease;
+    }
+    .card:hover {
+      transform: translateY(-5px);
+    }
+    .team-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 2rem;
+    }
+    .testimonial {
+      background: #ffffff;
+      padding: 1.5rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+      margin-bottom: 1.5rem;
+    }
+    .testimonial p {
+      font-style: italic;
+    }
+    .testimonial h4 {
+      margin-top: 1rem;
+    }
+    .counter-section {
+      background-color: #e3f2fd;
+      text-align: center;
+      padding: 3rem 2rem;
+    }
+    .counter {
+      font-size: 2.5rem;
+      font-weight: bold;
+      margin-bottom: 0.5rem;
+    }
+    .timeline {
+      position: relative;
+      max-width: 800px;
+      margin: 0 auto;
+    }
+    .timeline::after {
+      content: '';
+      position: absolute;
+      width: 6px;
+      background-color: #ccc;
+      top: 0;
+      bottom: 0;
+      left: 50%;
+      margin-left: -3px;
+    }
+    .timeline-box {
+      padding: 1rem;
+      background: #fff;
+      position: relative;
+      width: 45%;
+      border-radius: 6px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+      margin-bottom: 2rem;
+    }
+    .timeline-box.left {
+      left: 0;
+    }
+    .timeline-box.right {
+      left: 55%;
+    }
+    .timeline-box::before {
+      content: '';
+      position: absolute;
+      top: 15px;
+      width: 15px;
+      height: 15px;
+      background-color: #2079b0;
+      border-radius: 50%;
+      z-index: 1;
+    }
+    .timeline-box.left::before {
+      right: -8px;
+    }
+    .timeline-box.right::before {
+      left: -8px;
+    }
+  </style>
+</head>
+<body>
+  <nav class="navbar">
+    <div class="flex" style="justify-content: space-between; width: 100%;">
+      <a href="index.html"><img src="logo.png" alt="STEM Tool Logo" class="nav-logo"></a>
+      <ul class="flex">
+        <li><a href="index.html#">Home</a></li>
+        <li><a href="#vision">Vision</a></li>
+        <li><a href="#team">Team</a></li>
+        <li><a href="#faq">FAQs</a></li>
+        <li><a href="#testimonials">Testimonials</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <section id="vision">
+    <h2 class="section-title">Our Vision</h2>
+    <div class="container text-center">
+      <p>To revolutionize STEM education by providing immersive, interactive, and inclusive virtual learning environments where every student, regardless of location or resources, can explore and experiment safely and effectively.</p>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Our Mission</h2>
+    <div class="container text-center">
+      <p>We aim to bridge the gap between theoretical knowledge and practical understanding by simulating real-world experiments and complex scientific phenomena using the power of AI, 3D modeling, and cloud-based collaboration tools.</p>
+    </div>
+  </section>
+
+  <section class="counter-section">
+    <h2 class="section-title">Our Impact</h2>
+    <div class="container">
+      <div class="flex" style="justify-content: space-around; flex-wrap: wrap;">
+        <div>
+          <div class="counter" id="labsRun">0</div>
+          <p>Labs Simulated</p>
+        </div>
+        <div>
+          <div class="counter" id="students">0</div>
+          <p>Students Empowered</p>
+        </div>
+        <div>
+          <div class="counter" id="schools">0</div>
+          <p>Schools Reached</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section id="team">
+    <h2 class="section-title">Our Team</h2>
+    <div class="container team-grid">
+      <div class="card text-center">
+        <img src="https://avatars.githubusercontent.com/u/9919?s=200&v=4" alt="Team Member" style="border-radius: 50%; width: 100px;">
+        <h3>Arjun R</h3>
+        <p>Lead Developer</p>
+      </div>
+      <div class="card text-center">
+        <img src="https://avatars.githubusercontent.com/u/1024025?s=200&v=4" alt="Team Member" style="border-radius: 50%; width: 100px;">
+        <h3>Ananya V</h3>
+        <p>UI/UX Designer</p>
+      </div>
+      <div class="card text-center">
+        <img src="https://avatars.githubusercontent.com/u/36260787?s=200&v=4" alt="Team Member" style="border-radius: 50%; width: 100px;">
+        <h3>Karthik M</h3>
+        <p>AI/ML Specialist</p>
+      </div>
+      <div class="card text-center">
+        <img src="https://avatars.githubusercontent.com/u/50515418?s=200&v=4" alt="Team Member" style="border-radius: 50%; width: 100px;">
+        <h3>Sneha P</h3>
+        <p>Content & Outreach</p>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2 class="section-title">Our Journey</h2>
+    <div class="timeline">
+      <div class="timeline-box left">
+        <h4>2023 - Idea Born</h4>
+        <p>Identified the gap in virtual STEM education and began sketching the vision.</p>
+      </div>
+      <div class="timeline-box right">
+        <h4>2024 - First Prototype</h4>
+        <p>Built our first interactive physics lab simulation and tested it in 3 schools.</p>
+      </div>
+      <div class="timeline-box left">
+        <h4>2025 - Nationwide Rollout</h4>
+        <p>Launched full platform with multi-subject support and cloud collaboration features.</p>
+      </div>
+    </div>
+  </section>
+
+   <section id="faq">
+    <h2 class="section-title">Frequently Asked Questions</h2>
+    <div class="container">
+      <h4>Is this tool free to use?</h4>
+      <p>Yes, our base platform is free for students and educators.</p>
+      <h4>Do you support real-time collaboration?</h4>
+      <p>Yes! Our system allows students and teachers to collaborate on simulations remotely.</p>
+      <h4>What devices are supported?</h4>
+      <p>Any device with a modern browser: laptops, tablets, and smartphones.</p>
+      <h4>Can teachers track student progress?</h4>
+      <p>Absolutely! Teachers have access to dashboards that show experiment completion and performance analytics.</p>
+      <h4>Can I use this on my mobile device?</h4>
+      <p>Yes, the platform is fully responsive and works seamlessly on phones and tablets.</p>
+      <h4>Are AR/VR devices mandatory?</h4>
+      <p>No, AR/VR features are optional. The core platform works on standard devices too.</p>
+      <h4>How often is the platform updated?</h4>
+      <p>We release updates monthly with new experiments, bug fixes, and performance enhancements.</p>
+      <h4>Is training provided for educators?</h4>
+      <p>Yes, we offer onboarding webinars and video tutorials for teachers and institutions.</p>
+    </div>
+  </section>
+
+  <section id="testimonials">
+    <h2 class="section-title">What Users Say</h2>
+    <div class="container">
+      <div class="testimonial">
+        <p>“An absolute game changer! My students love the experiments and are more engaged than ever.”</p>
+        <h4>- Dr. Peter, Physics Teacher</h4>
+      </div>
+      <div class="testimonial">
+        <p>“I could perform complex simulations at home without any lab! It's intuitive and easy to use.”</p>
+        <h4>- jane Doe, Grade 11 Student</h4>
+      </div>
+      <div class="testimonial">
+        <p>“Beautiful UI and powerful backend. A must-have tool for modern science education.”</p>
+        <h4>- John Doe, EdTech Reviewer</h4>
+      </div>
+    </div>
+  </section>
+
+  <footer class="footer">
+    <p>&copy; 2025 Interactive STEM Teaching Tool. All rights reserved.</p>
+  </footer>
+
+  <script>
+    // Counter animation
+    function animateCounter(id, target) {
+      let count = 0;
+      const speed = 20;
+      const updateCount = () => {
+        count += Math.ceil(target / 100);
+        if (count >= target) {
+          count = target;
+        } else {
+          setTimeout(updateCount, speed);
+        }
+        document.getElementById(id).innerText = count + "+";
+      };
+      updateCount();
+    }
+
+    window.addEventListener("load", () => {
+      animateCounter("labsRun", 1240);
+      animateCounter("students", 3600);
+      animateCounter("schools", 120);
+    });
+  </script>
+</body>
+</html>
