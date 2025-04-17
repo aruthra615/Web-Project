@@ -172,15 +172,8 @@
 
     function showLogin(role) {
       const formArea = document.getElementById('formArea');
-      formArea.innerHTML = `
-        <form id="loginForm">
-          <h3>Login as ${role.charAt(0).toUpperCase() + role.slice(1)}</h3>
-          <label>Username</label>
-          <input type="text" id="loginUsername" required>
-          <label>Password</label>
-          <input type="password" id="loginPassword" required>
-          <button class="btn" type="submit">Login</button>
-        </form>`;
+      formArea.innerHTML = `$1`;
+formArea.scrollIntoView({ behavior: 'smooth' });
 
         document.getElementById('loginForm').addEventListener('submit', function(event) {
           event.preventDefault();
@@ -214,7 +207,8 @@
     function showRegister() {
       const formArea = document.getElementById('formArea');
       formArea.innerHTML = `
-        <form id="registerForm" onsubmit="handleValidatedRegistration(event)">
+        <form id="registerForm" onsubmit="handleValidatedRegistration(event)">`;
+formArea.scrollIntoView({ behavior: 'smooth' });
           <h3>Register</h3>
           <label>Username</label><input type="text" name="username" required>
           <label>Email</label><input type="email" name="email" required>
