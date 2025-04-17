@@ -1,22 +1,25 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang=\"en\">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta charset=\"UTF-8\" />
+  <meta name=\"viewport\" content=\"width=device-width, initial-scale=1.0\" />
   <title>Teacher Dashboard | STEM Teaching Tool</title>
-  <link rel="stylesheet" href="style.css" />
+  <link rel=\"stylesheet\" href=\"style.css\" />
+  <link href=\"https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600&display=swap\" rel=\"stylesheet\">
   <style>
     body {
       font-family: 'Montserrat', sans-serif;
-      background: #f0f8ff;
+      background: linear-gradient(to right, #f0f8ff, #e6f7ff);
       margin: 0;
+      overflow-x: hidden;
     }
     .navbar {
       position: sticky;
       top: 0;
       z-index: 999;
-      background: #fff;
-      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.03);
+      background: rgba(255, 255, 255, 0.9);
+      backdrop-filter: blur(10px);
+      box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
       padding: 1rem 2rem;
       display: flex;
       justify-content: space-between;
@@ -25,126 +28,115 @@
     .navbar a {
       text-decoration: none;
       color: #1f2d3d;
-      font-weight: bold;
+      font-weight: 500;
       margin-left: 1.5rem;
+      transition: color 0.3s;
     }
+    .navbar a:hover {
+      color: #007bff;
+    }
+    .profile-container {
+      position: relative;
+      display: inline-block;
+    }
+    .profile-icon {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0,0,0,0.15);
+    }
+    .dropdown-menu {
+      display: none;
+      position: absolute;
+      top: 50px;
+      right: 0;
+      background: #fff;
+      border-radius: 10px;
+      box-shadow: 0 2px 12px rgba(0, 0, 0, 0.2);
+      min-width: 160px;
+      overflow: hidden;
+      z-index: 1000;
+      animation: fadeIn 0.5s ease;
+    }
+    .dropdown-menu a {
+      display: block;
+      padding: 10px 15px;
+      color: #1f2d3d;
+      text-decoration: none;
+      font-weight: normal;
+      border-bottom: 1px solid #f0f0f0;
+      transition: background 0.3s;
+    }
+    .dropdown-menu a:hover {
+      background: #f0f8ff;
+    }
+
     .dashboard {
       padding: 2rem;
+      animation: slideUp 1s ease;
     }
-    .section-title {
-      margin: 1.5rem 0 1rem;
-      font-weight: bold;
-      font-size: 1.2rem;
+
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(-10px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    .grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-      gap: 1.5rem;
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(50px); }
+      to { opacity: 1; transform: translateY(0); }
     }
-    .tile {
-      background: white;
+
+    .dashboard img {
+      width: 100%;
       border-radius: 10px;
-      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.05);
-      padding: 1.5rem;
-      text-align: center;
-      transition: transform 0.2s;
-    }
-    .tile:hover {
-      transform: translateY(-5px);
-    }
-    .tile img {
-      width: 70px;
-      height: 70px;
-      object-fit: contain;
-      margin-bottom: 0.5rem;
-    }
-    .badge-grid {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 1rem;
-      margin-top: 1rem;
-    }
-    .badge {
-      background: #fff;
-      padding: 0.6rem 1rem;
-      border-radius: 30px;
-      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.1);
-      font-size: 0.9rem;
+      margin-bottom: 1rem;
     }
   </style>
 </head>
 <body>
-  <header class="navbar">
-    <a href="index.html">
-      <img src="logo.png" alt="STEM Tool Logo" style="height: 36px; vertical-align: middle; margin-right: 10px;" />
+  <header class=\"navbar\">
+    <a href=\"index.html\">
+      <img src=\"logo.png\" alt=\"STEM Tool Logo\" style=\"height: 36px; vertical-align: middle; margin-right: 10px;\" />
       STEM Tool
     </a>
     <nav>
-      <a href="index.html">Home</a>
-      <a href="about.html">About</a>
-      <a href="login.html">Logout</a>
+      <a href=\"index.html\">Home</a>
+      <a href=\"about.html\">About</a>
+      <div class=\"profile-container\">
+        <img src=\"profile-icon.png\" alt=\"Profile\" class=\"profile-icon\" onclick=\"toggleDropdown()\">
+        <div class=\"dropdown-menu\" id=\"dropdownMenu\">
+          <a href=\"profilet.html\">Profile</a>
+          <a href=\"settings.html\">Settings</a>
+          <a href=\"login.html\">Logout</a>
+        </div>
+      </div>
     </nav>
   </header>
 
-  <div class="dashboard">
-    <div class="section-title">Welcome, Teacher!</div>
-    <div class="grid">
-      <div class="tile">Classes Handled: 5</div>
-      <div class="tile">Active Students: 120</div>
-      <div class="tile">Labs Conducted: 24</div>
-    </div>
-
-    <div class="section-title">My Classes</div>
-    <div class="grid">
-      <div class="tile">Grade 9 - A</div>
-      <div class="tile">Grade 10 - B</div>
-      <div class="tile">Grade 11 - C</div>
-    </div>
-
-    <div class="section-title">Virtual Labs</div>
-    <div class="grid">
-      <div class="tile">Physics Lab</div>
-      <div class="tile">Chemistry Lab</div>
-      <div class="tile">Biology Lab</div>
-    </div>
-
-    <div class="section-title">Assign & Evaluate</div>
-    <div class="grid">
-      <div class="tile">Assign Lab Work</div>
-      <div class="tile">Evaluate Submissions</div>
-      <div class="tile">Upload Resources</div>
-    </div>
-
-    <div class="section-title">Analytics</div>
-    <div class="grid">
-      <div class="tile">Student Progress Charts</div>
-      <div class="tile">Lab Access Frequency</div>
-    </div>
-
-    <div class="section-title">Educational Games</div>
-    <div class="grid">
-      <div class="tile">Periodic Puzzle</div>
-      <div class="tile">Cell Quiz</div>
-    </div>
-
-    <div class="section-title">Badges Overview</div>
-    <div class="badge-grid">
-      <div class="badge">Engagement Star</div>
-      <div class="badge">Feedback Master</div>
-    </div>
-
-    <div class="section-title">Announcements</div>
-    <div class="grid">
-      <div class="tile">Post New Update</div>
-      <div class="tile">Schedule Upcoming Labs</div>
-    </div>
-
-    <div class="section-title">Profile & Settings</div>
-    <div class="grid">
-      <div class="tile">Edit Profile</div>
-      <div class="tile">Change Password</div>
-      <div class="tile">Preferences</div>
-    </div>
+  <div class=\"dashboard\">
+    <img src=\"dashboard-welcome.gif\" alt=\"Welcome\">
+    <img src=\"teacher-dashboard.png\" alt=\"Teacher Dashboard\">
   </div>
+
+  <script>
+    function toggleDropdown() {
+      const menu = document.getElementById('dropdownMenu');
+      menu.style.display = menu.style.display === 'block' ? 'none' : 'block';
+    }
+
+    window.onclick = function(event) {
+      if (!event.target.matches('.profile-icon')) {
+        const dropdowns = document.getElementsByClassName(\"dropdown-menu\");
+        for (let i = 0; i < dropdowns.length; i++) {
+          const openDropdown = dropdowns[i];
+          if (openDropdown.style.display === 'block') {
+            openDropdown.style.display = 'none';
+          }
+        }
+      }
+    }
+  </script>
 </body>
 </html>
+
