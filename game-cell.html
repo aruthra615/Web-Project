@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Cell Structure Quest</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(to right, #f6d365, #fda085);
+      display: flex;
+      flex-direction: column;
+      min-height: 100vh;
+    }
+
+    .game-header {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #e67e22;
+      color: white;
+      padding: 1rem 2rem;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .game-header .left h2 {
+      margin: 0;
+      font-size: 20px;
+    }
+
+    .game-header nav a {
+      color: #fff;
+      text-decoration: none;
+      font-weight: 500;
+      margin-left: 2rem;
+    }
+
+    .game-header .right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .profile-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: white;
+      padding: 2px;
+      cursor: pointer;
+    }
+
+    .logout-btn {
+      background: #ff4d4d;
+      padding: 0.5rem 1rem;
+      border-radius: 6px;
+      text-decoration: none;
+      color: white;
+      font-weight: 500;
+      transition: background 0.3s;
+    }
+
+    .logout-btn:hover {
+      background: #cc0000;
+    }
+
+    h1 {
+      text-align: center;
+      color: #fff;
+      margin: 1.5rem 0 1rem;
+    }
+
+    .game-container {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 2rem;
+      justify-content: center;
+      align-items: flex-start;
+      padding: 0 2rem 2rem;
+    }
+
+    .cell-diagram {
+      background: white;
+      border-radius: 12px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+      padding: 1rem;
+      width: 300px;
+      height: 400px;
+      background-image: url('https://cdn.pixabay.com/photo/2013/07/12/18/11/cell-153648_1280.png');
+      background-size: cover;
+      position: relative;
+    }
+
+    .drop-zone {
+      position: absolute;
+      width: 60px;
+      height: 60px;
+      border: 2px dashed #aaa;
+      border-radius: 10px;
+    }
+
+    .zone1 { top: 30%; left: 20%; }
+    .zone2 { top: 60%; left: 40%; }
+    .zone3 { top: 45%; left: 70%; }
+
+    .organelle-bank {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      align-items: center;
+    }
+
+    .organelle {
+      width: 120px;
+      padding: 0.5rem;
+      background: white;
+      border-radius: 10px;
+      text-align: center;
+      cursor: grab;
+      box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+      font-weight: bold;
+    }
+
+    .completed {
+      background-color: #4caf50;
+      color: white;
+    }
+
+    #result {
+      text-align: center;
+      margin-top: 1rem;
+      font-weight: bold;
+      color: #fff;
+    }
+  </style>
+</head>
+<body>
+  <!-- Header -->
+  <header class="game-header">
+    <div class="left">
+      <h2>STEM Games</h2>
+      <nav>
+        <a href="stuhome.html">Dashboard</a>
+      </nav>
+    </div>
+    <div class="right">
+      <img src="icons/profile.svg" alt="Profile" class="profile-icon" />
+      <a href="login.html" class="logout-btn">Logout</a>
+    </div>
+  </header>
+
+  <h1>🧬 Cell Structure Quest</h1>
+
+  <div class="game-container">
+    <div class="cell-diagram">
+      <div class="drop-zone zone1" data-zone="Nucleus"></div>
+      <div class="drop-zone zone2" data-zone="Mitochondria"></div>
+      <div class="drop-zone zone3" data-zone="Golgi Body"></div>
+    </div>
+    <div class="organelle-bank">
+      <div class="organelle" draggable="true" data-name="Nucleus">Nucleus</div>
+      <div class="organelle" draggable="true" data-name="Mitochondria">Mitochondria</div>
+      <div class="organelle" draggable="true" data-name="Golgi Body">Golgi Body</div>
+    </div>
+  </div>
+
+  <div id="result"></div>
+
+  <script>
+    const organelles = document.querySelectorAll('.organelle');
+    const zones = document.querySelectorAll('.drop-zone');
+    let placed = 0;
+
+    organelles.forEach(item => {
+      item.addEventListener('dragstart', e => {
+        e.dataTransfer.setData('text/plain', item.dataset.name);
+      });
+    });
+
+    zones.forEach(zone => {
+      zone.addEventListener('dragover', e => e.preventDefault());
+      zone.addEventListener('drop', e => {
+        e.preventDefault();
+        const draggedName = e.dataTransfer.getData('text');
+        if (draggedName === zone.dataset.zone) {
+          zone.textContent = draggedName;
+          zone.classList.add('completed');
+          placed++;
+          if (placed === 3) {
+            document.getElementById('result').textContent = '🎉 Great Job! All organelles placed correctly!';
+          }
+        } else {
+          alert('❌ That doesn\'t belong there! Try again.');
+        }
+      });
+    });
+  </script>
+</body>
+</html>
