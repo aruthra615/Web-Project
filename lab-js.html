@@ -66,8 +66,19 @@
   </style>
 </head>
 <body>
+      <header class="game-header">
+  <div class="left" style="display: flex; align-items: center; gap: 1rem;">
+    <img src="logo.png" alt="STEM Tool Logo" class="nav-logo" style="height: 40px;">
+    <h2 style="margin: 0; color: #0072ff;">Lab</h2>
+  </div>
+  <div class="right" style="display: flex; align-items: center; gap: 1.5rem;">
+    <a href="colhome.html" class="dashboard-link">Dashboard</a>
+    <a href="login.html" class="logout-btn">Logout</a>
+    <img src="icon.svg" alt="Profile" class="profile-icon" style="height: 32px;">
+  </div>
+</header>
   <div class="container">
-    <h1>🟢 JavaScript Compiler Simulation</h1>
+    <h1>JavaScript Compiler (Offline)</h1>
     <textarea id="code">// Write your JS code here\nconsole.log("Hello, World!");</textarea>
     <button onclick="simulateJSCompile()">Compile & Run</button>
     <div class="terminal" id="terminal">// Output will appear here...</div>
