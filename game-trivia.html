@@ -1,0 +1,215 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Tech Trivia Tower</title>
+  <style>
+    body {
+      margin: 0;
+      font-family: 'Montserrat', sans-serif;
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: flex-start;
+      min-height: 100vh;
+      padding: 2rem;
+      color: white;
+    }
+
+    .game-header {
+      width: 100%;
+      background: rgba(255, 255, 255, 0.95);
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+      padding: 1rem 2rem;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+    }
+
+    .game-header .left h2 {
+      margin: 0;
+      font-size: 1.5rem;
+      color: #0072ff;
+    }
+
+    .game-header nav a {
+      text-decoration: none;
+      color: #333;
+      margin-left: 1.5rem;
+      font-weight: bold;
+    }
+
+    .game-header .right {
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+    }
+
+    .profile-icon {
+      width: 32px;
+      height: 32px;
+    }
+
+    .logout-btn {
+      text-decoration: none;
+      background: #0072ff;
+      color: white;
+      padding: 0.4rem 1rem;
+      border-radius: 6px;
+      font-weight: bold;
+      transition: background 0.2s;
+    }
+
+    .logout-btn:hover {
+      background: #005bbb;
+    }
+
+    h1 {
+      margin-bottom: 1rem;
+    }
+
+    .tower {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1rem;
+      margin: 2rem 0;
+    }
+
+    .block {
+      width: 200px;
+      height: 60px;
+      background: white;
+      color: #0072ff;
+      border-radius: 8px;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+      transition: transform 0.2s ease-in-out;
+    }
+
+    .question-box {
+      background: white;
+      color: #333;
+      padding: 1rem;
+      border-radius: 12px;
+      text-align: center;
+      width: 90%;
+      max-width: 600px;
+      box-shadow: 0 4px 8px rgba(0,0,0,0.2);
+    }
+
+    .answers button {
+      margin: 0.5rem;
+      padding: 0.5rem 1rem;
+      border: none;
+      border-radius: 6px;
+      font-weight: bold;
+      background: #0072ff;
+      color: white;
+      cursor: pointer;
+    }
+
+    .answers button:hover {
+      background: #005bbb;
+    }
+
+    .score {
+      font-weight: bold;
+      margin-top: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <header class="game-header">
+    <div class="left">
+      <h2>STEM Games</h2>
+      <nav>
+        <a href="colhome.html">Dashboard</a>
+      </nav>
+    </div>
+    <div class="right">
+      <img src="icons/profile.svg" alt="Profile" class="profile-icon" />
+      <a href="login.html" class="logout-btn">Logout</a>
+    </div>
+  </header>
+
+  <h1>🧠 Tech Trivia Tower</h1>
+  <div class="tower" id="tower"></div>
+
+  <div class="question-box">
+    <div id="question">Loading question...</div>
+    <div class="answers" id="answers"></div>
+    <div class="score">Score: <span id="score">0</span></div>
+  </div>
+
+  <script>
+    const questions = [
+      {
+        q: "What does HTTP stand for?",
+        options: ["HyperText Transfer Protocol", "High Tech Transfer Program", "Hyperlink Text Tool Package", "Host-To-Host Protocol"],
+        answer: 0
+      },
+      {
+        q: "Which data structure uses FIFO order?",
+        options: ["Stack", "Queue", "Tree", "Graph"],
+        answer: 1
+      },
+      {
+        q: "What is the time complexity of binary search?",
+        options: ["O(n)", "O(n log n)", "O(log n)", "O(1)"],
+        answer: 2
+      },
+      {
+        q: "Which language is primarily used for Android development?",
+        options: ["Swift", "Java", "Kotlin", "Python"],
+        answer: 2
+      }
+    ];
+
+    let current = 0;
+    let score = 0;
+
+    function loadQuestion() {
+      const q = questions[current];
+      document.getElementById('question').textContent = q.q;
+      const answerBox = document.getElementById('answers');
+      answerBox.innerHTML = '';
+      q.options.forEach((opt, idx) => {
+        const btn = document.createElement('button');
+        btn.textContent = opt;
+        btn.onclick = () => checkAnswer(idx);
+        answerBox.appendChild(btn);
+      });
+    }
+
+    function checkAnswer(index) {
+      const isCorrect = index === questions[current].answer;
+      if (isCorrect) {
+        score += 10;
+        const block = document.createElement('div');
+        block.classList.add('block');
+        block.textContent = `Level ${current + 1}`;
+        document.getElementById('tower').prepend(block);
+      }
+      document.getElementById('score').textContent = score;
+      current++;
+      if (current < questions.length) {
+        setTimeout(loadQuestion, 800);
+      } else {
+        document.getElementById('question').textContent = '🎉 Tower Complete!';
+        document.getElementById('answers').innerHTML = '';
+      }
+    }
+
+    loadQuestion();
+  </script>
+</body>
+</html>
