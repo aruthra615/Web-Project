@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Login | STEM Teaching Tool</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      font-family: 'Montserrat', sans-serif;
+      background: #f8fbfd;
+      padding: 2rem;
+    }
+    h2 {
+      text-align: center;
+      margin-bottom: 2rem;
+    }
+    .login-options, .form-container {
+      display: flex;
+      justify-content: center;
+      gap: 2rem;
+      flex-wrap: wrap;
+    }
+    .option {
+      text-align: center;
+      cursor: pointer;
+      padding: 1rem;
+      border-radius: 10px;
+      background: white;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+      transition: transform 0.2s ease;
+    }
+    .option:hover {
+      transform: translateY(-5px);
+    }
+    .option img {
+      width: 100px;
+      height: 100px;
+      object-fit: cover;
+    }
+    form {
+      max-width: 600px;
+      margin: 2rem auto;
+      background: white;
+      padding: 2rem;
+      border-radius: 10px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+    }
+    form label {
+      display: block;
+      margin-top: 1rem;
+    }
+    form input, form select {
+      width: 100%;
+      padding: 0.5rem;
+      margin-top: 0.3rem;
+      border-radius: 6px;
+      border: 1px solid #ccc;
+    }
+    .child-form {
+      border: 1px solid #ddd;
+      padding: 1rem;
+      border-radius: 8px;
+      margin-top: 1rem;
+    }
+    .btn {
+      margin-top: 2rem;
+      display: block;
+      width: 100%;
+      padding: 1rem;
+      background: #2079b0;
+      color: white;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-size: 1rem;
+    }
+  </style>
+</head>
+<body>
+  <h2>Select Your Role</h2>
+  <div class="login-options">
+    <div class="option" onclick="showLogin('teacher')">
+      <img src="https://cdn-icons-png.flaticon.com/512/1995/1995470.png" alt="Teacher">
+      <p>Login as Teacher</p>
+    </div>
+    <div class="option" onclick="showLogin('student')">
+      <img src="https://cdn-icons-png.flaticon.com/512/3135/3135755.png" alt="Student">
+      <p>Login as Student</p>
+    </div>
+    <div class="option" onclick="showLogin('parent')">
+      <img src="https://cdn-icons-png.flaticon.com/512/747/747376.png" alt="Parent">
+      <p>Login as Parent</p>
+    </div>
+  </div>
+
+  <div style="text-align: center; margin-top: 2rem;">
+    <button class="btn" onclick="showRegister()">Register</button>
+  </div>
+
+  <div id="formArea"></div>
+
+  <script>
+    function showLogin(role) {
+      const formArea = document.getElementById('formArea');
+      formArea.innerHTML = `
+        <form>
+          <h3>Login as ${role.charAt(0).toUpperCase() + role.slice(1)}</h3>
+          <label>Username</label>
+          <input type="text" required>
+          <label>Password</label>
+          <input type="password" required>
+          <button class="btn" type="submit">Login</button>
+        </form>
+      `;
+    }
+
+    function showRegister() {
+      const formArea = document.getElementById('formArea');
+      formArea.innerHTML = `
+        <form id="registerForm">
+          <h3>Register</h3>
+          <label>First Name</label><input type="text" required>
+          <label>Middle Name</label><input type="text">
+          <label>Last Name</label><input type="text" required>
+          <label>Date of Birth</label><input type="date" required>
+          <label>I am a:</label>
+          <select id="userType" onchange="handleUserType(this.value)">
+            <option value="">Select</option>
+            <option value="student">Student</option>
+            <option value="teacher">Teacher</option>
+            <option value="parent">Parent</option>
+          </select>
+          <div id="extraFields"></div>
+          <button class="btn" type="submit">Sign Up</button>
+        </form>
+      `;
+    }
+
+    function handleUserType(value) {
+      const container = document.getElementById('extraFields');
+      if (value === 'parent') {
+        addParentFields(container);
+      } else if (value === 'teacher') {
+        container.innerHTML = `
+          <label>School/College</label><input type="text" required>
+          <label>Employee/Faculty ID</label><input type="text" required>
+          <label>Subject</label><input type="text" required>
+        `;
+      } else if (value === 'student') {
+        container.innerHTML = `
+          <label>School/College</label><input type="text" required>
+          <label>Admission/Register Number</label><input type="text" required>
+          <label>Class/Standard/Year</label><input type="text" required>
+          <label>Degree (if college)</label>
+          <select>
+            <option value="">Select</option>
+            <option value="BSc">B.Sc</option>
+            <option value="BA">B.A</option>
+            <option value="BCom">B.Com</option>
+            <option value="BTech">B.Tech</option>
+            <option value="BE">B.E</option>
+            <option value="MSc">M.Sc</option>
+            <option value="MTech">M.Tech</option>
+          </select>
+        `;
+      } else {
+        container.innerHTML = "";
+      }
+    }
+
+    function addParentFields(container) {
+      container.innerHTML = '';
+      const childContainer = document.createElement('div');
+      childContainer.id = 'childSection';
+      addChild(childContainer);
+      const addBtn = document.createElement('button');
+      addBtn.innerText = 'Add Another Child';
+      addBtn.type = 'button';
+      addBtn.className = 'btn';
+      addBtn.style.marginTop = '1rem';
+      addBtn.onclick = () => addChild(childContainer);
+      container.appendChild(childContainer);
+      container.appendChild(addBtn);
+    }
+
+    function addChild(container) {
+      const div = document.createElement('div');
+      div.className = 'child-form';
+      div.innerHTML = `
+        <h4>Child Info</h4>
+        <label>Child Name</label><input type="text" required>
+        <label>Date of Birth</label><input type="date" required>
+        <label>School/College</label><input type="text" required>
+        <label>Relation to the Child</label><input type="text" required>
+      `;
+      container.appendChild(div);
+    }
+  </script>
+</body>
+</html>
