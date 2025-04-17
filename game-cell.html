@@ -25,31 +25,31 @@
       box-shadow: 0 4px 8px rgba(0,0,0,0.1);
     }
 
-    .game-header .left h2 {
-      margin: 0;
-      font-size: 20px;
-    }
-
-    .game-header nav a {
-      color: #fff;
-      text-decoration: none;
-      font-weight: 500;
-      margin-left: 2rem;
-    }
-
-    .game-header .right {
+    .game-header .left {
       display: flex;
       align-items: center;
       gap: 1rem;
     }
 
-    .profile-icon {
-      width: 32px;
-      height: 32px;
-      border-radius: 50%;
-      background: white;
-      padding: 2px;
-      cursor: pointer;
+    .game-header .left img {
+      height: 40px;
+    }
+
+    .game-header .left h2 {
+      margin: 0;
+      color: white;
+    }
+
+    .game-header .right {
+      display: flex;
+      align-items: center;
+      gap: 1.5rem;
+    }
+
+    .dashboard-link {
+      text-decoration: none;
+      font-weight: 500;
+      color: white;
     }
 
     .logout-btn {
@@ -64,6 +64,14 @@
 
     .logout-btn:hover {
       background: #cc0000;
+    }
+
+    .profile-icon {
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: white;
+      padding: 2px;
     }
 
     h1 {
@@ -86,24 +94,39 @@
       border-radius: 12px;
       box-shadow: 0 2px 8px rgba(0,0,0,0.2);
       padding: 1rem;
-      width: 300px;
-      height: 400px;
-      background-image: url('https://cdn.pixabay.com/photo/2013/07/12/18/11/cell-153648_1280.png');
+      width: 350px;
+      height: 450px;
+      background-image: url('e144078e-eea8-49ad-a6a9-63330018ee6c.png');
       background-size: cover;
+      background-position: center;
       position: relative;
     }
 
     .drop-zone {
       position: absolute;
-      width: 60px;
-      height: 60px;
+      width: 70px;
+      height: 70px;
       border: 2px dashed #aaa;
       border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      color: rgba(0, 0, 0, 0.3);
+      font-size: 0.75rem;
+      background-color: rgba(255, 255, 255, 0.5);
+      transition: background 0.3s ease, color 0.3s ease;
     }
 
-    .zone1 { top: 30%; left: 20%; }
-    .zone2 { top: 60%; left: 40%; }
-    .zone3 { top: 45%; left: 70%; }
+    .drop-zone.completed {
+      background-color: #4caf50 !important;
+      color: white !important;
+      border-style: solid;
+      font-weight: bold;
+    }
+
+    .zone1 { top: 30%; left: 20%; } /* Nucleus */
+    .zone2 { top: 58%; left: 55%; } /* Mitochondria */
+    .zone3 { top: 42%; left: 72%; } /* Golgi Body */
 
     .organelle-bank {
       display: flex;
@@ -113,19 +136,19 @@
     }
 
     .organelle {
-      width: 120px;
-      padding: 0.5rem;
+      width: 130px;
+      padding: 0.7rem;
       background: white;
       border-radius: 10px;
       text-align: center;
       cursor: grab;
       box-shadow: 0 2px 4px rgba(0,0,0,0.1);
       font-weight: bold;
+      transition: background 0.2s;
     }
 
-    .completed {
-      background-color: #4caf50;
-      color: white;
+    .organelle:active {
+      background: #f0f0f0;
     }
 
     #result {
@@ -137,27 +160,27 @@
   </style>
 </head>
 <body>
+
   <!-- Header -->
   <header class="game-header">
-  <div class="left" style="display: flex; align-items: center; gap: 1rem;">
-    <img src="logo.png" alt="STEM Tool Logo" class="nav-logo" style="height: 40px;">
-    <h2 style="margin: 0; color: #0072ff;">Game</h2>
-  </div>
-  <div class="right" style="display: flex; align-items: center; gap: 1.5rem;">
-    <a href="stuhome.html" class="dashboard-link">Dashboard</a>
-    <a href="login.html" class="logout-btn">Logout</a>
-    <img src="icon.svg" alt="Profile" class="profile-icon" style="height: 32px;">
-  </div>
-</header>
-
+    <div class="left">
+      <img src="logo.png" alt="STEM Tool Logo">
+      <h2>Game</h2>
+    </div>
+    <div class="right">
+      <a href="stuhome.html" class="dashboard-link">Dashboard</a>
+      <a href="login.html" class="logout-btn">Logout</a>
+      <img src="icon.svg" alt="Profile" class="profile-icon">
+    </div>
+  </header>
 
   <h1>🧬 Cell Structure Quest</h1>
 
   <div class="game-container">
     <div class="cell-diagram">
-      <div class="drop-zone zone1" data-zone="Nucleus"></div>
-      <div class="drop-zone zone2" data-zone="Mitochondria"></div>
-      <div class="drop-zone zone3" data-zone="Golgi Body"></div>
+      <div class="drop-zone zone1" data-zone="Nucleus">Nucleus?</div>
+      <div class="drop-zone zone2" data-zone="Mitochondria">Mitochondria?</div>
+      <div class="drop-zone zone3" data-zone="Golgi Body">Golgi Body?</div>
     </div>
     <div class="organelle-bank">
       <div class="organelle" draggable="true" data-name="Nucleus">Nucleus</div>
@@ -184,7 +207,7 @@
       zone.addEventListener('drop', e => {
         e.preventDefault();
         const draggedName = e.dataTransfer.getData('text');
-        if (draggedName === zone.dataset.zone) {
+        if (draggedName === zone.dataset.zone && !zone.classList.contains('completed')) {
           zone.textContent = draggedName;
           zone.classList.add('completed');
           placed++;
@@ -197,5 +220,6 @@
       });
     });
   </script>
+
 </body>
 </html>
