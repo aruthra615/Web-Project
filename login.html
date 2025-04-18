@@ -303,6 +303,18 @@
         window.location.href = 'parenthome.html';
       }
     }
+
+    window.addEventListener('DOMContentLoaded', () => {
+  const params = new URLSearchParams(window.location.search);
+  const role = params.get('role');
+  const signup = params.get('signup');
+
+  if (role) {
+    showLogin(role);
+  } else if (signup === 'true') {
+    showRegister();
+  }
+});
   </script>
 </body>
 </html>
